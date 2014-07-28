@@ -2,7 +2,30 @@
 #include "Map.h"
 #include "Ship.h"
 
-enum PLAYER_TYPE {NORMAL, AI, NETWORK};
+enum PlayerName
+{
+	NORMAL =  100, 
+	AI = 300, 
+	NETWORK = 500,
+};
+
+typedef struct
+{
+	int x;
+}t_x;
+
+struct XPosition
+{
+	int x;
+};
+
+struct Position
+{
+	char x;
+	char y;
+};
+
+typedef int t_x;
 
 class Player
 {
@@ -11,12 +34,17 @@ public:
 	~Player();
 	void Locate_Ships();
 	void Attack();
-	Map Submit_map();
+	Map Submit_map(std::string playerName)
+	{
+		playerName = playerName;
+	}
 
 private:
-	std::string playerName;
-	PLAYER_TYPE player_type;
-	Map myMap;
-	Ship * myShips;
+	std::string mPlayerName;
+	PLAYER_TYPE mPlayer_type;
+	
+	Map m_MyMap;
+	Ship* m_MyShips;
+	Ship targetShip;
 
 };

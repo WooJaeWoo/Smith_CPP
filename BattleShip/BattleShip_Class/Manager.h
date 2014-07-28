@@ -11,4 +11,3 @@ public:
 	void Game_Over();
 	void Check_Ship_Attacked(Map submitted_Map, Ship * ships);
 };
-

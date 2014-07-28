@@ -4,11 +4,10 @@ class Map
 public:
 	Map();
 	~Map();
-	void MarkAttack(int x, int y);
+	void MarkAttack(char x, char y);
 	void Render();
 
 private:
-	bool ** coordinate;
-
+	bool coordinate[8][8];
 };
 
