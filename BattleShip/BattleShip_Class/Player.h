@@ -1,50 +1,33 @@
 #pragma once
-#include "Map.h"
+#include "Board.h"
 #include "Ship.h"
-
-enum PlayerName
-{
-	NORMAL =  100, 
-	AI = 300, 
-	NETWORK = 500,
-};
-
-typedef struct
-{
-	int x;
-}t_x;
-
-struct XPosition
-{
-	int x;
-};
-
-struct Position
-{
-	char x;
-	char y;
-};
-
-typedef int t_x;
+#include "AirCraft.h"
+#include "BattleShip.h"
+#include "Cruiser.h"
+#include "Destroyer.h"
 
 class Player
 {
 public:
 	Player();
 	~Player();
-	void Locate_Ships();
+
+public:
+	void PlaceShips();
 	void Attack();
-	Map Submit_map(std::string playerName)
-	{
-		playerName = playerName;
-	}
+	HitResult HitCheck(Position p);
+	void GiveUp();
+	void PrintShips();
 
-private:
-	std::string mPlayerName;
-	PLAYER_TYPE mPlayer_type;
-	
-	Map m_MyMap;
-	Ship* m_MyShips;
-	Ship targetShip;
+protected:
+	Board myBoard;
+	Board enemyBoard;
+	//Ship* shipList;
+	AirCraft m_Aircraft;
+	BattleShip m_BattleShip;
+	Cruiser m_Cruiser;
+	Destroyer m_Destroyer[2];
 
+	int type;
 };
+
