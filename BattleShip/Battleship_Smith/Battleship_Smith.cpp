@@ -11,9 +11,8 @@
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	srand(time(NULL));
+	srand((unsigned)time(NULL));
 
 	getchar();
 	return 0;
 }
-

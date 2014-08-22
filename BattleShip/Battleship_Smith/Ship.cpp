@@ -1,16 +1,18 @@
 #include "stdafx.h"
 #include "Ship.h"
+#include "Player.h"
 
 
 Ship::Ship()
 {
-	memset(m_Coordinate, 0, sizeof(Coordinate) * 5);
-	// *5가 배의 개수를 말하는 것 같은데 하드코딩인가?
+	m_player = new Player();
+	memset(m_Coordinate, 0, sizeof(Coordinate) * m_player->GetShipCount());
 }
 
 
 Ship::~Ship()
 {
+	delete m_player;
 }
 
 HitResult Ship::HitCheck(Coordinate coordinate)
@@ -57,7 +59,6 @@ void Ship::AddPosition(Coordinate coordinate)
 		m_Coordinate[i].m_X = coordinate.m_X;
 		m_Coordinate[i].m_Y = coordinate.m_Y;
 		//m_Coordinate[i] = coordinate;
-		//이건 왜 안됨?
 	}
 }
 
@@ -70,7 +71,7 @@ void Ship::AddPosition(char x, char y)
 	AddPosition(coordinate);
 }
 
-void Ship::Print()
+void Ship::PrintCoordnates()
 {
 	printf_s("Coordinates of %s: ", m_Name.c_str());
 	for (int i = 0; i < m_MaxHP; i++)

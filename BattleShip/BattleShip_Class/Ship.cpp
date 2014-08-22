@@ -13,7 +13,7 @@ Ship::~Ship()
 
 void Ship::AddPosition(Position pos)
 {
-	pos.m_X = tolower(pos.m_X);
+	pos.m_X = (char)tolower(pos.m_X);
 
 	for (int i = 0; i < m_MaxHP; i++)
 	{
@@ -51,7 +51,7 @@ std::string Ship::GetName()
 }
 HitResult Ship::HitCheck(Position hitPos)
 {
-	hitPos.m_X = tolower(hitPos.m_X);
+	hitPos.m_X = (char)tolower(hitPos.m_X);
 
 	for (int i = 0; i < m_MaxHP; i++)
 	{

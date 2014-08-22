@@ -74,7 +74,7 @@ int _tmain()
 // 	}
 // 
 // 	ship.Print();
-	srand(time(NULL));
+	srand((unsigned)time(NULL));
 	Player player;
 	player.PlaceShips();
 	player.PrintShips();

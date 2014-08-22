@@ -26,7 +26,7 @@ void Player::PlaceShips()
 	for (int i = 0; i < m_Aircraft.GetMaxHP(); i++)
 	{
 		m_Aircraft.AddPosition('a' + start_X + i * direction,
-			'1' + start_Y + i * ((direction + 1) % 2));
+			'1' + start_Y + (char)i * ((direction + 1) % 2));
 	}
 	
 	do
