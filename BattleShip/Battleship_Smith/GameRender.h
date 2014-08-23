@@ -8,12 +8,12 @@ public:
 	GameRender();
 	~GameRender();
 
-	void SetTitle() { SetConsoleTitle(L"Smith's Battleship Game"); }
+	void SetWindowTitle() { SetConsoleTitle(L"Smith's Battleship Game"); }
+	void RenderTitle();
+	void PlayerSettingPage();
+	void GameSettingPage();
+
+	void GotoXY(int x, int y);
 	void SetConsoleSize(int widht, int height);
-	void SetFontColor(Colors color);
-
-	//추후에 작성해보기
-	//void SetFullScreen();
-	//void SetFontSize();
+	void SetColor(int fcolor, int bcolor);
 };
-

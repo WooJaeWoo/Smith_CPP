@@ -12,7 +12,7 @@ public:
 	~GameManager();
 
 
-protected:
+private:
 	Player* player1;
 	Player* player2;
 };

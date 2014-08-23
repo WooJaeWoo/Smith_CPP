@@ -31,6 +31,17 @@ Player::~Player()
 	m_ShipList.clear();
 }
 
+void Player::LocateShips()
+{
+	for (auto ship : m_ShipList)
+	{
+		int maxHp = 0;
+		maxHp = ship->GetMaxHP();
+		ship->SetCurrentHP(maxHp);
+		RandomSetShip(*ship);
+	}
+}
+
 void Player::SetShip(Ship& ship, Coordinate coordinate, Direction direction)
 {
 	for (int i = 0; i < ship.GetMaxHP(); i++)
@@ -48,7 +59,7 @@ void Player::SetShip(Ship& ship, Coordinate coordinate, Direction direction)
 			coordinate.m_X--;
 			break;
 		case RIGHT:
-			coordinate.m_Y--;
+			coordinate.m_X++;
 			break;
 		default:
 			printf_s("Error: invalid direction");
@@ -57,24 +68,106 @@ void Player::SetShip(Ship& ship, Coordinate coordinate, Direction direction)
 	}
 }
 
+bool Player::OverlabCheck(Ship& ship, Coordinate coordinate, Direction direction)
+{
+	int maxHP = ship.GetMaxHP();
+	Coordinate original = coordinate;
+
+	for (auto shipInList : m_ShipList)
+	{
+		coordinate = original;
+		for (int i = 0; i < maxHP; i++)
+		{
+			if (shipInList->Overlab(coordinate, direction))
+				return true;
+			switch (direction)
+			{
+			case UP:
+				coordinate.m_Y--;
+				break;
+			case DOWN:
+				coordinate.m_Y++;
+				break;
+			case LEFT:
+				coordinate.m_X--;
+				break;
+			case RIGHT:
+				coordinate.m_X++;
+				break;
+			default:
+				break;
+			}
+		}
+	}
+	return false;
+}
+
+bool Player::InvalidPosition(Ship& ship, Coordinate coordinate, Direction direction)
+{
+	int maxSize = m_MyMap->GetMaxSizeofMap();
+	int maxHp = ship.GetMaxHP();
+
+	switch (direction)
+	{
+		case UP:
+			if (coordinate.m_Y < maxHp - 1 || coordinate.m_Y >= maxSize)
+				return true;
+			else
+				return false;
+			break;
+		case DOWN:
+			if (coordinate.m_Y < 0 || coordinate.m_Y > maxSize - maxHp)
+				return true;
+			else
+				return false;
+			break;
+		case LEFT:
+			if (coordinate.m_X < maxHp - 1 || coordinate.m_X >= maxSize)
+				return true;
+			else
+				return false;
+			break;
+		case RIGHT:
+			if (coordinate.m_X < 0 || coordinate.m_X > maxSize - maxHp)
+				return true;
+			else
+				return false;
+			break;
+		default:
+			printf_s("Error: Invalid Position");
+			return true;
+			break;
+	}
+
+}
+
 void Player::RandomSetShip(Ship& ship)
 {
-	Coordinate startCoordinate;
-	startCoordinate.m_X = rand() % m_MyMap->GetMaxSizeofMap();
-	startCoordinate.m_Y = rand() % m_MyMap->GetMaxSizeofMap();
-	Direction direction = static_cast<Direction>(rand() % 4);
-	SetShip(ship, startCoordinate, direction);
+	Coordinate coordinate;
+	Direction direction;
+	do 
+	{
+		coordinate.m_X = rand() % m_MyMap->GetMaxSizeofMap();
+		coordinate.m_Y = rand() % m_MyMap->GetMaxSizeofMap();
+		direction = (Direction)(rand() % 4);
+	} while (m_MyMap->OutOfBoundary(coordinate) || InvalidPosition(ship, coordinate, direction) || OverlabCheck(ship, coordinate, direction));
+	SetShip(ship, coordinate, direction);
 }
 
 Coordinate Player::Attack(Coordinate shot)
 {
-	if (m_EnemyMap->IsNOTHING(shot))
+	if (m_EnemyMap->IsNOTHING(shot) && !m_MyMap->OutOfBoundary(shot))
 	{
 		return shot;
 	}
+	else if (m_MyMap->OutOfBoundary(shot))
+	{
+		printf_s("Wrong Coordinate!");
+		//다시 공격할 수 있는 함수 호출해주기
+	}
 	else
 	{
-		printf_s("This coordinate has been ATTACKED!");
+		printf_s("This Coordinate has been ATTACKED!");
 		//다시 공격할 수 있는 함수 호출해주기
 	}
 }
@@ -86,7 +179,7 @@ void Player::RandomAttack()
 	{
 		shot.m_X = rand() % m_MyMap->GetMaxSizeofMap();
 		shot.m_Y = rand() % m_MyMap->GetMaxSizeofMap();
-	} while (!m_EnemyMap->IsNOTHING(shot));
+	} while (!m_EnemyMap->IsNOTHING(shot) && m_MyMap->OutOfBoundary(shot));
 	Attack(shot);
 }
 

@@ -54,6 +54,9 @@
     <ClInclude Include="GameRender.h">
       <Filter>GameSystem</Filter>
     </ClInclude>
+    <ClInclude Include="GameSetting.h">
+      <Filter>GameSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Aircraft.cpp">
@@ -87,6 +90,9 @@
       <Filter>GameSystem</Filter>
     </ClCompile>
     <ClCompile Include="GameRender.cpp">
+      <Filter>GameSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSetting.cpp">
       <Filter>GameSystem</Filter>
     </ClCompile>
   </ItemGroup>

@@ -9,7 +9,7 @@ Map::Map()
 	for (int i = 0; i < m_MaxSize; i++)
 	{
 		m_map[i] = new HitResult[m_MaxSize];
-		for (int j = 0; j < m_MaxSize; ++j) //왜 ++이 앞에 붙는 것인가?
+		for (int j = 0; j < m_MaxSize; ++j)
 		{
 			m_map[i][j] = NOTHING;
 		}
@@ -18,6 +18,7 @@ Map::Map()
 
 Map::~Map()
 {
+	delete m_map;
 }
 
 bool Map::IsNOTHING(Coordinate coordinate)
@@ -28,4 +29,14 @@ bool Map::IsNOTHING(Coordinate coordinate)
 void Map::SetMap(Coordinate shot, HitResult hitresult)
 {
 	m_map[shot.m_X][shot.m_Y] = hitresult;
+}
+
+bool Map::OutOfBoundary(Coordinate coordinate)
+{
+	coordinate.m_X = tolower(coordinate.m_X);
+	if (coordinate.m_X < 0 || coordinate.m_X > m_MaxSize - 1
+		|| coordinate.m_Y < 0 || coordinate.m_Y > m_MaxSize -1)
+		return true;
+	else
+		return false;
 }
