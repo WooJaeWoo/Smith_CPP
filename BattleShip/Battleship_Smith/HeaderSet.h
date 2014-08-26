@@ -8,6 +8,8 @@
 #define SPACE		32
 #define ENTER		13
 
+#define SHIPTYPECOUNT 4
+
 struct Coordinate
 {
 	char m_X;
@@ -35,9 +37,9 @@ enum ShipType
 
 enum Direction
 {
-	UP,
 	DOWN,
 	LEFT,
+	UP,
 	RIGHT,
 };
 
@@ -46,14 +48,6 @@ enum PlayerType
 	NORMAL,
 	AI,
 	NETWORK,
-};
-
-enum GameStatus
-{
-	TITLE,
-	MENU,
-	PLAY,
-	GAMEOVER,
 };
 
 enum Colors

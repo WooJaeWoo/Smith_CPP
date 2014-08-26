@@ -13,5 +13,13 @@
 #include <time.h>
 #include <vector>
 #include <string>
+#include <sstream>
 
 // TODO: 프로그램에 필요한 추가 헤더는 여기에서 참조합니다.
+
+#include "HeaderSet.h"
+
+int GetMaxHP(ShipType type);
+Colors GetForeColor(ShipType type);
+Colors GetBackColor(ShipType type);
+std::string GetShipChar(ShipType type);

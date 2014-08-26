@@ -85,7 +85,6 @@
     <ClInclude Include="Destroyer.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameRender.h" />
-    <ClInclude Include="GameSetting.h" />
     <ClInclude Include="HeaderSet.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Player.h" />
@@ -101,7 +100,6 @@
     <ClCompile Include="Destroyer.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameRender.cpp" />
-    <ClCompile Include="GameSetting.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Ship.cpp" />

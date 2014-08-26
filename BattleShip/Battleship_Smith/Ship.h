@@ -1,5 +1,4 @@
 #pragma once
-#include "HeaderSet.h"
 #include "stdafx.h"
 
 class Player;

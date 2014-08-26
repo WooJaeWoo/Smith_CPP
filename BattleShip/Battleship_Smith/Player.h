@@ -1,6 +1,5 @@
 #pragma once
 #include "stdafx.h"
-#include "HeaderSet.h"
 
 class Ship;
 class Map;
@@ -11,14 +10,19 @@ public:
 	Player();
 	~Player();
 
-	//int				GetShipCount() { return m_ShipCount; }
-
+	void				MakeMaps();
+	void				MakeShips();
 
 	void				SetShip(Ship& ship, Coordinate coordinate, Direction direction); //Manual Set
 	void				RandomSetShip(Ship& ship);
 	bool				InvalidPosition(Ship& ship, Coordinate coordinate, Direction direction);
 	bool				OverlabCheck(Ship& ship, Coordinate coordinate, Direction direction);
 	void				LocateShips();
+
+	void				SetNumShip(std::vector<int> numShip);
+	std::vector<Ship*>	GetShipList() { return m_ShipList; }
+	Map*				GetMyMap() { return m_MyMap; }
+	Map*				GetEnemyMap() { return m_EnemyMap; }
 
 	Coordinate			Attack(Coordinate shot);
 	void				RandomAttack();
@@ -27,11 +31,11 @@ public:
 	void				PrintShips();
 
 private:
-	int					m_ShipCount;
 	PlayerType			m_Playertype;
 	std::string			m_PlayerName;
 	Map*				m_MyMap;
 	Map*				m_EnemyMap;
-	std::list<Ship*>	m_ShipList;
+	std::vector<int>	m_NumShip;
+	std::vector<Ship*>	m_ShipList;
 };
 

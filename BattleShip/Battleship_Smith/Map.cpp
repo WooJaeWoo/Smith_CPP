@@ -4,7 +4,6 @@
 
 Map::Map()
 {
-	m_MaxSize = 8;
 	m_map = new HitResult*[m_MaxSize];
 	for (int i = 0; i < m_MaxSize; i++)
 	{
@@ -26,7 +25,7 @@ bool Map::IsNOTHING(Coordinate coordinate)
 	return m_map[coordinate.m_X][coordinate.m_Y] == NOTHING;
 }
 
-void Map::SetMap(Coordinate shot, HitResult hitresult)
+void Map::SetMapStatus(Coordinate shot, HitResult hitresult)
 {
 	m_map[shot.m_X][shot.m_Y] = hitresult;
 }

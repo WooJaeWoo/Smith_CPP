@@ -6,17 +6,10 @@
 #include "Battleship.h"
 #include "Cruiser.h"
 #include "Destroyer.h"
+#include "GameSetting.h"
 
 Player::Player()
 {
-	m_MyMap = new Map();
-	m_EnemyMap = new Map();
-	m_ShipCount = 5;
-	m_ShipList.push_back(new Aircraft());
-	m_ShipList.push_back(new Battleship());
-	m_ShipList.push_back(new Cruiser());
-	m_ShipList.push_back(new Destroyer());
-	m_ShipList.push_back(new Destroyer());
 }
 
 Player::~Player()
@@ -31,6 +24,37 @@ Player::~Player()
 	m_ShipList.clear();
 }
 
+
+//GAME SETTING FUNCTION
+
+void Player::MakeMaps()
+{
+	m_MyMap = new Map();
+	m_EnemyMap = new Map();
+}
+
+void Player::MakeShips()
+{
+	m_ShipList.clear();
+	for (int i = 0; i < m_NumShip[0]; i++)
+	{
+		m_ShipList.push_back(new Aircraft());
+	}
+	for (int i = 0; i < m_NumShip[1]; i++)
+	{
+		m_ShipList.push_back(new Battleship());
+	}
+	for (int i = 0; i < m_NumShip[2]; i++)
+	{
+		m_ShipList.push_back(new Cruiser());
+	}
+	for (int i = 0; i < m_NumShip[3]; i++)
+	{
+		m_ShipList.push_back(new Destroyer());
+	}
+}
+
+
 void Player::LocateShips()
 {
 	for (auto ship : m_ShipList)
@@ -40,6 +64,19 @@ void Player::LocateShips()
 		ship->SetCurrentHP(maxHp);
 		RandomSetShip(*ship);
 	}
+}
+
+void Player::RandomSetShip(Ship& ship)
+{
+	Coordinate coordinate;
+	Direction direction;
+	do
+	{
+		coordinate.m_X = rand() % m_MyMap->GetMaxSizeofMap();
+		coordinate.m_Y = rand() % m_MyMap->GetMaxSizeofMap();
+		direction = (Direction)(rand() % 4);
+	} while (m_MyMap->OutOfBoundary(coordinate) || InvalidPosition(ship, coordinate, direction) || OverlabCheck(ship, coordinate, direction));
+	SetShip(ship, coordinate, direction);
 }
 
 void Player::SetShip(Ship& ship, Coordinate coordinate, Direction direction)
@@ -141,19 +178,9 @@ bool Player::InvalidPosition(Ship& ship, Coordinate coordinate, Direction direct
 
 }
 
-void Player::RandomSetShip(Ship& ship)
-{
-	Coordinate coordinate;
-	Direction direction;
-	do 
-	{
-		coordinate.m_X = rand() % m_MyMap->GetMaxSizeofMap();
-		coordinate.m_Y = rand() % m_MyMap->GetMaxSizeofMap();
-		direction = (Direction)(rand() % 4);
-	} while (m_MyMap->OutOfBoundary(coordinate) || InvalidPosition(ship, coordinate, direction) || OverlabCheck(ship, coordinate, direction));
-	SetShip(ship, coordinate, direction);
-}
 
+
+//GAME PLAY FUNCTION
 Coordinate Player::Attack(Coordinate shot)
 {
 	if (m_EnemyMap->IsNOTHING(shot) && !m_MyMap->OutOfBoundary(shot))
@@ -195,10 +222,22 @@ HitResult Player::SendResult(Coordinate shot)
 	return MISS;
 }
 
+
+
+
 void Player::PrintShips()
 {
 	for (auto ship : m_ShipList)
 	{
 		ship->PrintCoordnates();
+	}
+}
+
+void Player::SetNumShip(std::vector<int> numShip)
+{
+	m_NumShip.clear();
+	for (int i = 0; i < SHIPTYPECOUNT; i++)
+	{
+		m_NumShip.push_back(numShip[i]);
 	}
 }
