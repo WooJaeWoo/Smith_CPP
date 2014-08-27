@@ -12,7 +12,7 @@ public:
 	void					SetWindowTitle() { SetConsoleTitle(L"Smith's Battleship Game"); }
 	void					RenderTitle();
 	void					RenderPlayerSettingPage();
-	void					RenderGameSettingPage(Map& map);
+	void					RenderGameSettingPage();
 	void					RenderShipSettingPage(Map& map);
 	void					ShipSettingMenu(Map& map);
 	void					RenderMap(Map& map, int gotoX, int gotoY);

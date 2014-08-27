@@ -36,33 +36,32 @@ void GameManager::GameRun()
 	m_GameRender->SetNumShip(m_NumShip);
 
 	//GAME SETTING (MAP SIZE, SHIPS)
-	m_GameRender->RenderGameSettingPage(*m_p1_MyMap);
+	m_GameRender->RenderGameSettingPage();
+
+	//MAKE MAPS
+	m_player1->MakeMaps(m_GameRender->GetMapSize());
+	m_player2->MakeMaps(m_GameRender->GetMapSize());
 	
+	//MAP MACHING
+	m_p1_MyMap = m_player1->GetMyMap();
+	m_p1_EnemyMap = m_player1->GetEnemyMap();
+	m_p2_MyMap = m_player2->GetMyMap();
+	m_p2_EnemyMap = m_player2->GetEnemyMap();
+
 	//MAKE SHIPS
 	m_player1->SetNumShip(m_GameRender->GetNumShip());
 	m_player2->SetNumShip(m_GameRender->GetNumShip());
 	m_player1->MakeShips();
 	m_player2->MakeShips();
 
-
-	//SET THE MAP SIZE
-	m_p1_EnemyMap->SetMaxSizeofMap(m_p1_MyMap->GetMaxSizeofMap());
-	m_p2_MyMap->SetMaxSizeofMap(m_p1_MyMap->GetMaxSizeofMap());
-	m_p2_EnemyMap->SetMaxSizeofMap(m_p1_MyMap->GetMaxSizeofMap());
-
-	//MAP MAKING & MACHING
-	m_player1->MakeMaps();
-	m_player2->MakeMaps();
-	m_p1_MyMap = m_player1->GetMyMap();
-	m_p1_EnemyMap = m_player1->GetEnemyMap();
-	m_p2_MyMap = m_player2->GetMyMap();
-	m_p2_EnemyMap = m_player2->GetEnemyMap();
-	
 	m_GameRender->RenderShipSettingPage(*m_p1_MyMap);
 	m_GameRender->SetUpShipOnMap(AIRCRAFT, *m_p1_MyMap);
+	system("cls");
 	switch (m_PlayerType)
 	{
 	case NORMAL:
+		m_GameRender->RenderShipSettingPage(*m_p2_MyMap);
+		
 		break;
 	case AI:
 		m_player2->LocateShips();

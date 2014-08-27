@@ -6,7 +6,6 @@
 #include "Battleship.h"
 #include "Cruiser.h"
 #include "Destroyer.h"
-#include "GameSetting.h"
 
 Player::Player()
 {
@@ -27,10 +26,10 @@ Player::~Player()
 
 //GAME SETTING FUNCTION
 
-void Player::MakeMaps()
+void Player::MakeMaps(int m_MapSize)
 {
-	m_MyMap = new Map();
-	m_EnemyMap = new Map();
+	m_MyMap = new Map(m_MapSize);
+	m_EnemyMap = new Map(m_MapSize);
 }
 
 void Player::MakeShips()

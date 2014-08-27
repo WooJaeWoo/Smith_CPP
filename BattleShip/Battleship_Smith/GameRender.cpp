@@ -128,7 +128,7 @@ void GameRender::RenderPlayerSettingPage()
 	}
 }
 
-void GameRender::RenderGameSettingPage(Map& map)
+void GameRender::RenderGameSettingPage()
 {
 	SetConsoleSize(63, 34);
 	system("cls");
@@ -324,7 +324,6 @@ void GameRender::RenderGameSettingPage(Map& map)
 		{
 			if (okToStart == true && ValidMapSize() == true && shipSellect == 5)
 			{
-				map.SetMaxSizeofMap(m_MapSize);
 				break;
 			}
 		}

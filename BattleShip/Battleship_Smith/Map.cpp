@@ -2,8 +2,9 @@
 #include "Map.h"
 
 
-Map::Map()
+Map::Map(int maxSize)
 {
+	m_MaxSize = maxSize;
 	m_map = new HitResult*[m_MaxSize];
 	for (int i = 0; i < m_MaxSize; i++)
 	{

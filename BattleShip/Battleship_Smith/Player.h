@@ -10,7 +10,7 @@ public:
 	Player();
 	~Player();
 
-	void				MakeMaps();
+	void				MakeMaps(int m_MapSize);
 	void				MakeShips();
 
 	void				SetShip(Ship& ship, Coordinate coordinate, Direction direction); //Manual Set
