@@ -10,7 +10,7 @@ public:
 	Player();
 	~Player();
 
-	void				MakeMaps(int m_MapSize);
+	void				MakeMaps(int mapSize);
 	void				MakeShips();
 
 	void				SetShip(Ship& ship, Coordinate coordinate, Direction direction); //Manual Set
@@ -24,8 +24,8 @@ public:
 	Map*				GetMyMap() { return m_MyMap; }
 	Map*				GetEnemyMap() { return m_EnemyMap; }
 
-	Coordinate			Attack(Coordinate shot);
-	void				RandomAttack();
+	Coordinate			AttackableCheck(Coordinate shot);
+	Coordinate			RandomAttack();
 	HitResult			SendResult(Coordinate shot);
 
 	void				PrintShips();

@@ -10,16 +10,40 @@
 
 #define SHIPTYPECOUNT 4
 
-struct Coordinate
+enum GameStatus
+{
+	TITLE,
+	SELECT_PLAYER,
+	SELECT_MAP_SHIP,
+	SET_SHIP,
+	GAMEPLAY,
+	GAMEOVER,
+};
+
+enum Direction
+{
+	DOWN,
+	RIGHT,
+	UP,
+	LEFT,
+};
+
+struct Position
 {
 	char m_X;
 	char m_Y;
+	Direction m_Direction;
+};
+
+enum MapStatus
+{
+	NOTHING,
+	SHIP,
+	ATTACKED,
 };
 
 enum HitResult
 {
-	NOTHING,
-	SHIP,
 	HIT,
 	MISS,
 	DESTROY_AIRCRAFT,
@@ -34,14 +58,6 @@ enum ShipType
 	BATTLESHIP,
 	CRUISER,
 	DESTROYER,
-};
-
-enum Direction
-{
-	DOWN,
-	LEFT,
-	UP,
-	RIGHT,
 };
 
 enum PlayerType

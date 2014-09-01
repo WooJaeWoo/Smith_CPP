@@ -18,6 +18,10 @@ Map::Map(int maxSize)
 
 Map::~Map()
 {
+	for (int i = 0; i < m_MaxSize; i++)
+	{
+		delete m_map[i];
+	}
 	delete m_map;
 }
 

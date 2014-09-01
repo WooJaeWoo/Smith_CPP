@@ -48,10 +48,10 @@
     <ClInclude Include="HeaderSet.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="GameManager.h">
+    <ClInclude Include="GameEngine.h">
       <Filter>GameSystem</Filter>
     </ClInclude>
-    <ClInclude Include="GameRender.h">
+    <ClInclude Include="GameManager.h">
       <Filter>GameSystem</Filter>
     </ClInclude>
   </ItemGroup>
@@ -83,10 +83,10 @@
     <ClCompile Include="Battleship_Smith.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="GameManager.cpp">
+    <ClCompile Include="GameEngine.cpp">
       <Filter>GameSystem</Filter>
     </ClCompile>
-    <ClCompile Include="GameRender.cpp">
+    <ClCompile Include="GameManager.cpp">
       <Filter>GameSystem</Filter>
     </ClCompile>
   </ItemGroup>

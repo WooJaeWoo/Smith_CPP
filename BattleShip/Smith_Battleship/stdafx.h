@@ -6,26 +6,23 @@
 #pragma once
 
 #include "targetver.h"
+
 #include <stdio.h>
 #include <tchar.h>
-#include <iostream>
-#include <list>
-#include <time.h>
-#include <vector>
-#include <string>
-#include <sstream>
 
 // TODO: 프로그램에 필요한 추가 헤더는 여기에서 참조합니다.
-
-#include "HeaderSet.h"
+#include <iostream>
+#include <list>
+#include <vector>
+#include <conio.h>
+#include <string>
+#include <time.h>
+#include <sstream>
 #include <crtdbg.h>
+#include "HeaderSet.h"
 
 #ifdef _DEBUG
 #define new new(_CLIENT_BLOCK, __FILE__, __LINE__)
 #endif
 
-
-int GetMaxHP(ShipType type);
-Colors GetForeColor(ShipType type);
-Colors GetBackColor(ShipType type);
-std::string GetShipChar(ShipType type);
+int GetMaxHP(ShipType stype);

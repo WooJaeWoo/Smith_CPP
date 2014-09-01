@@ -26,10 +26,10 @@ Player::~Player()
 
 //GAME SETTING FUNCTION
 
-void Player::MakeMaps(int m_MapSize)
+void Player::MakeMaps(int mapSize)
 {
-	m_MyMap = new Map(m_MapSize);
-	m_EnemyMap = new Map(m_MapSize);
+	m_MyMap = new Map(mapSize);
+	m_EnemyMap = new Map(mapSize);
 }
 
 void Player::MakeShips()
@@ -180,7 +180,7 @@ bool Player::InvalidPosition(Ship& ship, Coordinate coordinate, Direction direct
 
 
 //GAME PLAY FUNCTION
-Coordinate Player::Attack(Coordinate shot)
+Coordinate Player::AttackableCheck(Coordinate shot)
 {
 	if (m_EnemyMap->IsNOTHING(shot) && !m_MyMap->OutOfBoundary(shot))
 	{
@@ -198,7 +198,7 @@ Coordinate Player::Attack(Coordinate shot)
 	}
 }
 
-void Player::RandomAttack()
+Coordinate Player::RandomAttack()
 {
 	Coordinate shot;
 	do 
@@ -206,7 +206,8 @@ void Player::RandomAttack()
 		shot.m_X = rand() % m_MyMap->GetMaxSizeofMap();
 		shot.m_Y = rand() % m_MyMap->GetMaxSizeofMap();
 	} while (!m_EnemyMap->IsNOTHING(shot) && m_MyMap->OutOfBoundary(shot));
-	Attack(shot);
+	return shot;
+	//Attack(shot);
 }
 
 HitResult Player::SendResult(Coordinate shot)

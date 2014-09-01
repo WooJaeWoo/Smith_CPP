@@ -1,9 +1,7 @@
 #pragma once
+#include <windows.h>
 
-class GameRender;
-class Player;
 class Map;
-
 
 class GameManager
 {
@@ -11,22 +9,45 @@ public:
 	GameManager();
 	~GameManager();
 
-	std::vector<int>	GetNumShip() { return m_NumShip; }
-	void				SetNumShip(std::vector<int> numShip) { m_NumShip = numShip; }
-	PlayerType			GetPlayerType() { return m_PlayerType; }
+	void					SetWindowTitle() { SetConsoleTitle(L"Smith's Battleship Game"); }
+	void					RenderTitle();
+	void					PlayerSettingPage();
+	void					GameSettingPage();
+	void					ShipSettingPage(Map& map);
+	int						ShipSettingMenu(Map& map);
+	void					GamePlayPage(Map& EnemyMap, Map& MyMap);
 
-	void				GameRun();
+	Coordinate				AttakInterface();
+	
+	void					RenderMap(Map& map, int gotoX, int gotoY);
+	void					RenderShipOnMap(ShipType shiptype, int gotoX, int gotoY, Direction direction);
+	void					SetUpShipOnMap(ShipType shiptype, Map& map);
+	void					RenderSpaceOnMap(ShipType shiptype, int gotoX, int gotoY, Direction direction);
+	void					RenderRemain();
+	void					PrintResult(HitResult hitResult);
+	void					PrintTurn();
+
+	void					RenderWin();
+	void					RenderLose();
+
+
+	PlayerType				GetPlayerType() { return m_PlayerType; }
+	std::vector<int>		GetNumShip() { return m_NumShip; }
+	int						GetMapSize() { return m_MapSize; }
+	void					SetNumShip(std::vector<int> numShip) { m_NumShip = numShip; }
+
+	void					GotoXY(int x, int y);
+	void					SetConsoleSize(int widht, int height);
+	void					SetColor(int fcolor, int bcolor);
+
+	bool					ValidMapSize();
+	bool					ValidPosition();
 
 private:
-	GameRender*			m_GameRender;
-	PlayerType			m_PlayerType;
-	Player*				m_player1;
-	Player*				m_player2;
-	Map*				m_p1_MyMap;
-	Map*				m_p1_EnemyMap;
-	Map*				m_p2_MyMap;
-	Map*				m_p2_EnemyMap;
-	std::vector<int>	m_NumShip;
-
+	PlayerType				m_PlayerType;
+	std::vector<int>		m_NumShip;
+	int						m_MapSize;
+	int						m_Turn;
+	std::vector<Coordinate> m_startCoordinates;
+	std::vector<Direction>	m_Directions;
 };
-
