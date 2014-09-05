@@ -19,6 +19,7 @@
 #include <time.h>
 #include <sstream>
 #include <crtdbg.h>
+#include <windows.h>
 #include "HeaderSet.h"
 
 #ifdef _DEBUG

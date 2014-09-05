@@ -17,7 +17,8 @@ enum GameStatus
 	SELECT_MAP_SHIP,
 	SET_SHIP,
 	GAMEPLAY,
-	GAMEOVER,
+	WIN,
+	LOSE,
 };
 
 enum Direction
@@ -32,7 +33,7 @@ struct Position
 {
 	char m_X;
 	char m_Y;
-	Direction m_Direction;
+	Direction m_direction;
 };
 
 enum MapStatus

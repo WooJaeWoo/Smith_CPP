@@ -29,3 +29,4 @@ protected:
 	int						m_MaxHP;
 	int						m_CurrentHP;
 };
+
