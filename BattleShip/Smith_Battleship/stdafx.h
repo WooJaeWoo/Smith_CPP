@@ -27,3 +27,6 @@
 #endif
 
 int GetMaxHP(ShipType stype);
+Colors GetForeColor(ShipType type);
+Colors GetBackColor(ShipType type);
+std::string GetShipChar(ShipType type);

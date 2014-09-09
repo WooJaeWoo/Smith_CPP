@@ -29,18 +29,28 @@ enum Direction
 	LEFT,
 };
 
+struct Coordinate
+{
+	int m_X;
+	int m_Y;
+};
+
 struct Position
 {
-	char m_X;
-	char m_Y;
+	int m_X;
+	int m_Y;
 	Direction m_direction;
 };
 
 enum MapStatus
 {
 	NOTHING,
-	SHIP,
-	ATTACKED,
+	SHIP_AIRCRAFT,
+	SHIP_BATTLESHIP,
+	SHIP_CRUISER,
+	SHEP_DESTROYER,
+	ATTACKED_SHIP,
+	ATTACKED_MISS,
 };
 
 enum HitResult
@@ -63,7 +73,8 @@ enum ShipType
 
 enum PlayerType
 {
-	NORMAL,
+	NONE,
+	PVP,
 	AI,
 	NETWORK,
 };

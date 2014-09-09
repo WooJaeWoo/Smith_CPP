@@ -1,14 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Ship">
-      <UniqueIdentifier>{4c347785-f0b9-4935-8fd9-bd25ffc08193}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameObject">
       <UniqueIdentifier>{5a249817-2b13-4b82-a177-72f3b75cad84}</UniqueIdentifier>
     </Filter>
     <Filter Include="Main">
       <UniqueIdentifier>{4f1b52b7-5fe6-4703-8459-56ece227d829}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameFlow">
+      <UniqueIdentifier>{8b442edd-90df-4a75-9d7e-dd4b5c7a0fe5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Ship">
+      <UniqueIdentifier>{4c347785-f0b9-4935-8fd9-bd25ffc08193}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -19,31 +22,37 @@
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="Aircraft.h">
-      <Filter>Ship</Filter>
+      <Filter>GameObject\Ship</Filter>
     </ClInclude>
     <ClInclude Include="Battleship.h">
-      <Filter>Ship</Filter>
+      <Filter>GameObject\Ship</Filter>
     </ClInclude>
     <ClInclude Include="Cruiser.h">
-      <Filter>Ship</Filter>
+      <Filter>GameObject\Ship</Filter>
     </ClInclude>
     <ClInclude Include="Destroyer.h">
-      <Filter>Ship</Filter>
+      <Filter>GameObject\Ship</Filter>
     </ClInclude>
     <ClInclude Include="Ship.h">
-      <Filter>Ship</Filter>
-    </ClInclude>
-    <ClInclude Include="GameInterface.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="GameManager.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="GameRenderer.h">
-      <Filter>GameObject</Filter>
+      <Filter>GameObject\Ship</Filter>
     </ClInclude>
     <ClInclude Include="HeaderSet.h">
       <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="GameInterface.h">
+      <Filter>GameFlow</Filter>
+    </ClInclude>
+    <ClInclude Include="GameManager.h">
+      <Filter>GameFlow</Filter>
+    </ClInclude>
+    <ClInclude Include="GameRenderer.h">
+      <Filter>GameFlow</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -54,28 +63,34 @@
       <Filter>Main</Filter>
     </ClCompile>
     <ClCompile Include="Aircraft.cpp">
-      <Filter>Ship</Filter>
+      <Filter>GameObject\Ship</Filter>
     </ClCompile>
     <ClCompile Include="Battleship.cpp">
-      <Filter>Ship</Filter>
+      <Filter>GameObject\Ship</Filter>
     </ClCompile>
     <ClCompile Include="Cruiser.cpp">
-      <Filter>Ship</Filter>
+      <Filter>GameObject\Ship</Filter>
     </ClCompile>
     <ClCompile Include="Destroyer.cpp">
-      <Filter>Ship</Filter>
+      <Filter>GameObject\Ship</Filter>
     </ClCompile>
     <ClCompile Include="Ship.cpp">
-      <Filter>Ship</Filter>
+      <Filter>GameObject\Ship</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>GameObject</Filter>
     </ClCompile>
     <ClCompile Include="GameInterface.cpp">
-      <Filter>GameObject</Filter>
+      <Filter>GameFlow</Filter>
     </ClCompile>
     <ClCompile Include="GameManager.cpp">
-      <Filter>GameObject</Filter>
+      <Filter>GameFlow</Filter>
     </ClCompile>
     <ClCompile Include="GameRenderer.cpp">
-      <Filter>GameObject</Filter>
+      <Filter>GameFlow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

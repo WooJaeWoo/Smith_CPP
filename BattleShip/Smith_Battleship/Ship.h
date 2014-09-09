@@ -5,8 +5,13 @@ class Ship
 {
 public:
 	Ship();
-	~Ship();
+	virtual ~Ship();
 
+	int						GetCurrentHP() { return m_CurrentHP; }
+	void					SetCurrentHP(int hp) { m_CurrentHP = hp; }
+
+	void					AddPosition(Position position);
+	HitResult				HitCheck(Coordinate shot);
 
 protected:
 	std::string				m_Name;

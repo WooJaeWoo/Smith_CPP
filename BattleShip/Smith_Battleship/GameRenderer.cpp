@@ -1,15 +1,9 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "GameRenderer.h"
-
+#include "Map.h"
 
 GameRenderer::GameRenderer()
 {
-	m_SizeOfMap = 9;
-	m_turn = 14;
-	m_HitResult = HIT;
-	///////////////////////////////////
-	/// Change Value at GameManager ///
-	///////////////////////////////////
 }
 
 
@@ -18,6 +12,11 @@ GameRenderer::~GameRenderer()
 }
 
 HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
+void GameRenderer::InitializeRenderer()
+{
+	m_SizeOfMap = 8;
+}
 
 void GameRenderer::RenderPages(GameStatus gameStatus)
 {
@@ -35,16 +34,7 @@ void GameRenderer::RenderPages(GameStatus gameStatus)
 		RenderBattleship();
 		RenderFiller(82, 81);
 		SetColor(GRAY, BLACK);
-		printf_s("\n  SMITH GAMES \t\t\t\t\t\t\t\t   ver1.0\n");
-		while (!_kbhit())
-		{
-			Sleep(600);
-			SetCursorPosition(0, 10);
-			printf_s("\t\t\t     PRESS ENTER KEY TO START      \t\t\t");
-			Sleep(1000);
-			SetCursorPosition(0, 10);
-			printf_s("                                                                            ");
-		}
+		printf_s("\n   SMITH GAMES \t\t\t\t\t\t\t\t ver1.0\n");
 		break;
 	case SELECT_PLAYER:
 		SetConsoleSize(62, 27);
@@ -62,6 +52,8 @@ void GameRenderer::RenderPages(GameStatus gameStatus)
 		RenderFiller(mapWidth + menuSpace, 61);
 		SetColor(WHITE, BLACK);
 		RenderMap(4, 9);
+		SetCursorAndColor(6, mapHeight + 1, BLACK, WHITE);
+		printf_s(" Remain ");
 		break;
 	case GAMEPLAY:
 		menuSpace = 25;
@@ -75,29 +67,27 @@ void GameRenderer::RenderPages(GameStatus gameStatus)
 		SetCursorPosition(mapWidth / 2 - 6, mapHeight);
 		printf_s("< Enemy Map >");
 		SetCursorPosition(gotoX, gotoY);
-		printf_s("¦£¦¡  Result  ¦¡¦¤");
+		printf_s("â”Œâ”€  Result  â”€â”");
 		SetCursorPosition(gotoX, gotoY + 1);
-		printf_s("¦¢              ¦¢");
+		printf_s("â”‚              â”‚");
 		SetCursorPosition(gotoX, gotoY + 2);
-		printf_s("¦¢              ¦¢");
+		printf_s("â”‚              â”‚");
 		SetCursorPosition(gotoX, gotoY + 3);
-		printf_s("¦¢              ¦¢");
+		printf_s("â”‚              â”‚");
 		SetCursorPosition(gotoX, gotoY + 4);
-		printf_s("¦¦¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¥");
+		printf_s("â””â”€â”€â”€â”€â”€â”€â”€â”˜");
 		SetCursorPosition(gotoX, gotoY + 6);
-		printf_s("¡á SMITH  GAMES ¡á");
+		printf_s("â–  SMITH  GAMES â– ");
 		SetCursorPosition(gotoX, gotoY + 8);
-		printf_s("¦£¦¡¦¡ turn ¦¡¦¡¦¤");
+		printf_s("â”Œâ”€â”€ turn â”€â”€â”");
 		SetCursorPosition(gotoX, gotoY + 9);
-		printf_s("¦¢              ¦¢");
+		printf_s("â”‚              â”‚");
 		SetCursorPosition(gotoX, gotoY + 10);
-		printf_s("¦¢              ¦¢");
+		printf_s("â”‚       0      â”‚");
 		SetCursorPosition(gotoX, gotoY + 11);
-		printf_s("¦¢              ¦¢");
+		printf_s("â”‚              â”‚");
 		SetCursorPosition(gotoX, gotoY + 12);
-		printf_s("¦¦¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¥");
-		PrintResult();
-		PrintTurn();
+		printf_s("â””â”€â”€â”€â”€â”€â”€â”€â”˜");
 		break;
 
 	case WIN:
@@ -120,11 +110,11 @@ void GameRenderer::RenderBattleship()
 {
 	SetColor(BLACK, WHITE);
 	printf_s("                                                                                 \n");
-	printf_s("  ¡á¡á¡á     ¡á  ¡á¡á¡á¡á ¡á¡á¡á¡á ¡á     ¡á¡á¡á  ¡á¡á¡á ¡á    ¡á ¡á¡á¡á ¡á¡á¡á  \n");
-	printf_s("  ¡á   ¡á   ¡á¡á    ¡á       ¡á    ¡á     ¡á     ¡á      ¡á    ¡á   ¡á   ¡á   ¡á \n");
-	printf_s("  ¡á¡á¡á   ¡á  ¡á   ¡á       ¡á    ¡á     ¡á¡á¡á  ¡á¡á   ¡á¡á¡á¡á   ¡á   ¡á¡á¡á  \n");
-	printf_s("  ¡á   ¡á ¡á¡á¡á¡á  ¡á       ¡á    ¡á     ¡á          ¡á ¡á    ¡á   ¡á   ¡á      \n");
-	printf_s("  ¡á¡á¡á  ¡á    ¡á  ¡á       ¡á    ¡á¡á¡á ¡á¡á¡á ¡á¡á¡á  ¡á    ¡á ¡á¡á¡á ¡á      \n");
+	printf_s("  â– â– â–      â–   â– â– â– â–  â– â– â– â–  â–      â– â– â–   â– â– â–  â–     â–  â– â– â–  â– â– â–   \n");
+	printf_s("  â–    â–    â– â–     â–        â–     â–      â–      â–       â–     â–    â–    â–    â–  \n");
+	printf_s("  â– â– â–    â–   â–    â–        â–     â–      â– â– â–   â– â–    â– â– â– â–    â–    â– â– â–   \n");
+	printf_s("  â–    â–  â– â– â– â–   â–        â–     â–      â–           â–  â–     â–    â–    â–       \n");
+	printf_s("  â– â– â–   â–     â–   â–        â–     â– â– â–  â– â– â–  â– â– â–   â–     â–  â– â– â–  â–       \n");
 	printf_s("                                                                                 ");
 }
 
@@ -132,11 +122,11 @@ void GameRenderer::RenderSetting()
 {
 	SetColor(BLACK, WHITE);
 	printf_s("                                                             \n");
-	printf_s("   ¡á¡á¡á ¡á¡á¡á ¡á¡á¡á¡á ¡á¡á¡á¡á ¡á¡á¡á ¡á    ¡á   ¡á¡á¡á  \n");
-	printf_s("  ¡á      ¡á        ¡á       ¡á      ¡á   ¡á¡á  ¡á  ¡á    ¡á \n");
-	printf_s("   ¡á¡á   ¡á¡á¡á    ¡á       ¡á      ¡á   ¡á ¡á ¡á ¡á        \n");
-	printf_s("       ¡á ¡á        ¡á       ¡á      ¡á   ¡á  ¡á¡á  ¡á  ¡á¡á \n");
-	printf_s("  ¡á¡á¡á  ¡á¡á¡á    ¡á       ¡á    ¡á¡á¡á ¡á    ¡á   ¡á¡á ¡á \n");
+	printf_s("   â– â– â–  â– â– â–  â– â– â– â–  â– â– â– â–  â– â– â–  â–     â–    â– â– â–   \n");
+	printf_s("  â–       â–         â–        â–       â–    â– â–   â–   â–     â–  \n");
+	printf_s("   â– â–    â– â– â–     â–        â–       â–    â–  â–  â–  â–         \n");
+	printf_s("       â–  â–         â–        â–       â–    â–   â– â–   â–   â– â–  \n");
+	printf_s("  â– â– â–   â– â– â–     â–        â–     â– â– â–  â–     â–    â– â–  â–  \n");
 	printf_s("                                                             ");
 }
 
@@ -144,11 +134,11 @@ void GameRenderer::RenderGamePlay()
 {
 	SetColor(BLACK, WHITE);
 	printf_s("                                                                          \n");
-	printf_s("    ¡á¡á¡á     ¡á    ¡á¡á  ¡á¡á ¡á¡á¡á¡á   ¡á¡á¡á  ¡á        ¡á  ¡á    ¡á \n");
-	printf_s("   ¡á    ¡á   ¡á¡á   ¡á ¡á¡á ¡á ¡á         ¡á   ¡á ¡á       ¡á¡á  ¡á  ¡á  \n");
-	printf_s("  ¡á         ¡á  ¡á  ¡á  ¡á  ¡á ¡á¡á¡á     ¡á¡á¡á  ¡á      ¡á  ¡á  ¡á¡á   \n");
-	printf_s("   ¡á  ¡á¡á ¡á¡á¡á¡á ¡á      ¡á ¡á         ¡á      ¡á     ¡á¡á¡á¡á  ¡á    \n");
-	printf_s("    ¡á¡á ¡á ¡á    ¡á ¡á      ¡á ¡á¡á¡á¡á   ¡á      ¡á¡á¡á ¡á    ¡á  ¡á    \n");
+	printf_s("    â– â– â–      â–     â– â–   â– â–  â– â– â– â–    â– â– â–   â–         â–   â–     â–  \n");
+	printf_s("   â–     â–    â– â–    â–  â– â–  â–  â–          â–    â–  â–        â– â–   â–   â–   \n");
+	printf_s("  â–          â–   â–   â–   â–   â–  â– â– â–      â– â– â–   â–       â–   â–   â– â–    \n");
+	printf_s("   â–   â– â–  â– â– â– â–  â–       â–  â–          â–       â–      â– â– â– â–   â–     \n");
+	printf_s("    â– â–  â–  â–     â–  â–       â–  â– â– â– â–    â–       â– â– â–  â–     â–   â–     \n");
 	printf_s("                                                                          ");
 }
 
@@ -156,11 +146,11 @@ void GameRenderer::RenderWin()
 {
 	SetColor(BLACK, WHITE);
 	printf_s("                                                             \n");
-	printf_s("   ¡á    ¡á  ¡á¡á   ¡á    ¡á    ¡á      ¡á ¡á¡á¡á ¡á    ¡á   \n");
-	printf_s("    ¡á  ¡á ¡á    ¡á ¡á    ¡á    ¡á      ¡á   ¡á   ¡á¡á  ¡á   \n");
-	printf_s("     ¡á¡á  ¡á    ¡á ¡á    ¡á    ¡á  ¡á  ¡á   ¡á   ¡á ¡á ¡á   \n");
-	printf_s("      ¡á   ¡á    ¡á ¡á    ¡á     ¡á ¡á ¡á    ¡á   ¡á  ¡á¡á   \n");
-	printf_s("      ¡á     ¡á¡á    ¡á¡á¡á       ¡á  ¡á   ¡á¡á¡á ¡á    ¡á   \n");
+	printf_s("   â–     â–   â– â–    â–     â–     â–       â–  â– â– â–  â–     â–    \n");
+	printf_s("    â–   â–  â–     â–  â–     â–     â–       â–    â–    â– â–   â–    \n");
+	printf_s("     â– â–   â–     â–  â–     â–     â–   â–   â–    â–    â–  â–  â–    \n");
+	printf_s("      â–    â–     â–  â–     â–      â–  â–  â–     â–    â–   â– â–    \n");
+	printf_s("      â–      â– â–     â– â– â–        â–   â–    â– â– â–  â–     â–    \n");
 	printf_s("                                                             ");
 }
 
@@ -168,11 +158,11 @@ void GameRenderer::RenderLose()
 {
 	SetColor(BLACK, WHITE);
 	printf_s("                                                                  \n");
-	printf_s("   ¡á    ¡á  ¡á¡á   ¡á    ¡á    ¡á       ¡á¡á    ¡á¡á¡á  ¡á¡á¡á   \n");
-	printf_s("    ¡á  ¡á ¡á    ¡á ¡á    ¡á    ¡á     ¡á    ¡á ¡á       ¡á       \n");
-	printf_s("     ¡á¡á  ¡á    ¡á ¡á    ¡á    ¡á     ¡á    ¡á  ¡á¡á¡á  ¡á¡á¡á   \n");
-	printf_s("      ¡á   ¡á    ¡á ¡á    ¡á    ¡á     ¡á    ¡á       ¡á ¡á       \n");
-	printf_s("      ¡á     ¡á¡á    ¡á¡á¡á     ¡á¡á¡á   ¡á¡á    ¡á¡á¡á  ¡á¡á¡á   \n");
+	printf_s("   â–     â–   â– â–    â–     â–     â–        â– â–     â– â– â–   â– â– â–    \n");
+	printf_s("    â–   â–  â–     â–  â–     â–     â–      â–     â–  â–        â–        \n");
+	printf_s("     â– â–   â–     â–  â–     â–     â–      â–     â–   â– â– â–   â– â– â–    \n");
+	printf_s("      â–    â–     â–  â–     â–     â–      â–     â–        â–  â–        \n");
+	printf_s("      â–      â– â–     â– â– â–      â– â– â–    â– â–     â– â– â–   â– â– â–    \n");
 	printf_s("                                                                  ");
 }
 
@@ -216,56 +206,154 @@ void GameRenderer::RenderMap(int gotoX, int gotoY)
 				if (i == 0)
 					printf_s("   ");
 				else if (i == 1)
-					printf_s("¦£");
+					printf_s("â”Œ");
 				else if (i == m_SizeOfMap + 1)
-					printf_s("¦¡¦¤");
+					printf_s("â”€â”");
 				else if (i >= 2)
-					printf_s("¦¡¦¨");
+					printf_s("â”€â”¬");
 			}
 			else if (j == m_SizeOfMap * 2 + 1)
 			{
 				if (i == 0)
 					printf_s("   ");
 				else if (i == 1)
-					printf_s("¦¦");
+					printf_s("â””");
 				else if (i == m_SizeOfMap + 1)
-					printf_s("¦¡¦¥");
+					printf_s("â”€â”˜");
 				else if (i >= 2)
-					printf_s("¦¡¦ª");
+					printf_s("â”€â”´");
 			}
 			else if (j % 2 == 0)
 			{
 				if (i == 0)
 					printf_s(" %c ", 'A' + (j / 2) - 1);
 				else
-					printf_s("¦¢  ");
+					printf_s("â”‚  ");
 			}
 			else // j % 2 == 1
 			{
 				if (i == 0)
 					printf_s("   ");
 				else if (i == 1)
-					printf_s("¦§");
+					printf_s("â”œ");
 				else if (i == m_SizeOfMap + 1)
-					printf_s("¦¡¦©");
+					printf_s("â”€â”¤");
 				else if (i >= 2)
-					printf_s("¦¡¦«");
+					printf_s("â”€â”¼");
 			}
 		}
 		printf_s("\n");
 	}
 }
 
-void GameRenderer::PrintTurn()
+void GameRenderer::RenderShipOnMap(ShipType shiptype, Position position)
 {
-	SetColor(WHITE, BLACK);
-	SetCursorPosition((m_SizeOfMap + 3) * 4 + 4, 20);
-	printf_s("      %2d      ", m_turn);
+	for (int i = 0; i < GetMaxHP(shiptype); ++i)
+	{
+		if (position.m_X < 9 || position.m_X > 4 * (m_SizeOfMap - 1) + 9 || position.m_Y < 11 || position.m_Y > 2 * (m_SizeOfMap - 1) + 11)
+			return;
+		SetCursorAndColor(position.m_X, position.m_Y, GetForeColor(shiptype), GetBackColor(shiptype));
+		printf_s("%s", GetShipChar(shiptype).c_str());
+		switch (position.m_direction)
+		{
+		case UP:
+			position.m_Y -= 2;
+			break;
+		case DOWN:
+			position.m_Y += 2;
+			break;
+		case LEFT:
+			position.m_X -= 4;
+			break;
+		case RIGHT:
+			position.m_X += 4;
+			break;
+		}
+	}
 }
 
-void GameRenderer::PrintResult()
+void GameRenderer::RenderSpaceOnMap(ShipType shiptype, Position position)
 {
-	switch (m_HitResult)
+	for (int i = 0; i < GetMaxHP(shiptype); ++i)
+	{
+		if (position.m_X < 9 || position.m_X > 4 * (m_SizeOfMap - 1) + 9 || position.m_Y < 11 || position.m_Y > 2 * (m_SizeOfMap - 1) + 11)
+			return;
+		SetCursorAndColor(position.m_X, position.m_Y, BLACK, BLACK);
+		printf_s("  ");
+		switch (position.m_direction)
+		{
+		case UP:
+			position.m_Y -= 2;
+			break;
+		case DOWN:
+			position.m_Y += 2;
+			break;
+		case LEFT:
+			position.m_X -= 4;
+			break;
+		case RIGHT:
+			position.m_X += 4;
+			break;
+		}
+	}
+}
+
+void GameRenderer::RenderMapStatus(int gotoX, int gotoY, Map& map)
+{
+	MapStatus currentMapStatus;
+	for (int i = 0; i < m_SizeOfMap; ++i)
+	{
+		for (int j = 0; j < m_SizeOfMap; ++j)
+		{
+			currentMapStatus = map.GetMapStatus(i, j);
+			switch (currentMapStatus)
+			{
+			case NOTHING:
+				break;
+			case SHIP_AIRCRAFT:
+				SetCursorAndColor(j * 4 + gotoX, i * 2 + gotoY, GetForeColor(AIRCRAFT), GetBackColor(AIRCRAFT));
+				printf_s("%s", GetShipChar(AIRCRAFT).c_str());
+				break;
+			case SHIP_BATTLESHIP:
+				SetCursorAndColor(j * 4 + gotoX, i * 2 + gotoY, GetForeColor(BATTLESHIP), GetBackColor(BATTLESHIP));
+				printf_s("%s", GetShipChar(BATTLESHIP).c_str());
+				break;
+			case SHIP_CRUISER:
+				SetCursorAndColor(j * 4 + gotoX, i * 2 + gotoY, GetForeColor(CRUISER), GetBackColor(CRUISER));
+				printf_s("%s", GetShipChar(CRUISER).c_str());
+				break;
+			case SHEP_DESTROYER:
+				SetCursorAndColor(j * 4 + gotoX, i * 2 + gotoY, GetForeColor(DESTROYER), GetBackColor(DESTROYER));
+				printf_s("%s", GetShipChar(DESTROYER).c_str());
+				break;
+			case ATTACKED_SHIP:
+				SetCursorAndColor(j * 4 + gotoX, i * 2 + gotoY, DARK_RED, BLACK);
+				printf_s("..");
+				break;
+			case ATTACKED_MISS:
+				SetCursorAndColor(j * 4 + gotoX, i * 2 + gotoY, WHITE, BLACK);
+				printf_s("MM");
+				break;
+			}
+		}
+	}
+}
+
+void GameRenderer::PrintTurn(int turn)
+{
+	if (turn <= 0 || turn > m_SizeOfMap * m_SizeOfMap)
+	{
+		printf_s("ERROR: Invalid Turn");
+		return;
+	}
+	SetColor(WHITE, BLACK);
+	SetCursorPosition((m_SizeOfMap + 3) * 4 + 4, 20);
+	printf_s("      %2d      ", turn);
+}
+
+void GameRenderer::PrintResult(HitResult hitResult)
+{
+	switch (hitResult)
 	{
 	case HIT:
 		SetCursorPosition((m_SizeOfMap + 3) * 4 + 4, 12);
@@ -333,4 +421,3 @@ void GameRenderer::SetCursorAndColor(int x, int y, int fcolor, int bcolor)
 	SetCursorPosition(x, y);
 	SetColor(fcolor, bcolor);
 }
-
