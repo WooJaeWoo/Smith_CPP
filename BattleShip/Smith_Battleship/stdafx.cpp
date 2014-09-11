@@ -89,3 +89,22 @@ std::string GetShipChar(ShipType type)
 	}
 	return shipChar;
 }
+
+void SetCursorPosition(int x, int y)
+{
+	COORD pos = { x, y };
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+}
+
+void SetColor(int fcolor, int bcolor)
+{
+	fcolor &= 0xf;
+	bcolor &= 0xf;
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), (bcolor << 4) | fcolor);
+}
+
+void SetCursorAndColor(int x, int y, int fcolor, int bcolor)
+{
+	SetCursorPosition(x, y);
+	SetColor(fcolor, bcolor);
+}

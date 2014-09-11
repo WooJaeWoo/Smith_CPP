@@ -51,9 +51,36 @@ void Player::MakeShips()
 	}
 }
 
-void Player::SetShip(Ship& ship, Position position)
+void Player::SetShip(Position position, ShipType shipType)
 {
+	m_MyMap->SetMapStatus(position, (MapStatus)((int)shipType + 1), shipType);
+	// 	for (int i = 0; i < GetMaxHP(shipType); ++i)
+	// 	{
+	// 		ship.AddPosition(position);
+	// 		switch (position.m_direction)
+	// 		{
+	// 		case UP:
+	// 			position.m_Y--;
+	// 			break;
+	// 		case DOWN:
+	// 			position.m_Y++;
+	// 			break;
+	// 		case LEFT:
+	// 			position.m_X--;
+	// 			break;
+	// 		case RIGHT:
+	// 			position.m_X++;
+	// 			break;
+	// 		default:
+	// 			printf_s("Error: invalid direction");
+	// 			break;
+	// 		}
+	// 	}
+}
 
+void Player::RenderUpdateMapStatus(int gotoX, int gotoY)
+{
+	m_MyMap->RenderMapStatus(gotoX, gotoY);
 }
 
 void Player::RandomSetShip(Ship& ship)
@@ -76,13 +103,70 @@ HitResult Player::SendResult(Coordinate shot)
 
 }
 
-bool Player::InvalidPosition(Ship& ship, Position position)
-{
-
-
-}
-
 bool Player::AttackableCheck(Coordinate shot)
 {
 
 }*/
+
+
+bool Player::IsValidSet(Position position, ShipType shipType)
+{
+	int maxHP = GetMaxHP(shipType);
+	for (int i = 0; i < maxHP; ++i)
+	{
+		if (position.m_X < 0 || position.m_X > m_MyMap->GetMapSize() - 1
+			|| position.m_Y < 0 || position.m_Y > m_MyMap->GetMapSize() - 1)
+		{
+			m_MyMap->RenderMapStatus(9, 11);
+			return false;
+		}
+		if (m_MyMap->GetMapStatus(position.m_X, position.m_Y) != NOTHING)
+		{
+			m_MyMap->RenderMapStatus(9, 11);
+			return false;
+		}
+		switch (position.m_direction)
+		{
+		case DOWN:
+			position.m_Y++;
+			break;
+		case UP:
+			position.m_Y--;
+			break;
+		case RIGHT:
+			position.m_X++;
+			break;
+		case LEFT:
+			position.m_X--;
+			break;
+		}
+	}
+	return true;
+}
+
+void Player::RenderRemain()
+{
+	int sumShip = 0;
+	for (int i = 0; i < SHIPTYPECOUNT; ++i)
+	{
+		sumShip += m_NumShip[i];
+	}
+	SetCursorAndColor(15, (m_MyMap->GetMapSize() + 2) * 2 + 9, BLACK, BLACK);
+	for (int i = 0; i < sumShip + 1; ++i)
+	{
+		printf_s("   ");
+	}
+	SetCursorPosition(15, (m_MyMap->GetMapSize() + 2) * 2 + 9);
+	SetColor(WHITE, BLACK);
+	printf_s(" ");
+	for (int i = 0; i < SHIPTYPECOUNT; i++)
+	{
+		for (int j = 0; j < m_NumShip[i]; j++)
+		{
+			SetColor(GetForeColor((ShipType)i), GetBackColor((ShipType)i));
+			printf_s("%s", GetShipChar((ShipType)i).c_str());
+			SetColor(WHITE, BLACK);
+			printf_s(" ");
+		}
+	}
+}

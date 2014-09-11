@@ -13,13 +13,13 @@ public:
 	void				InitializeRenderer();
 	void				RenderPages(GameStatus gameStatus);
 
-	void				SetSizeOfMap(int sizeOfMap) { m_SizeOfMap = sizeOfMap; }
+	void				SetSizeOfMap(int sizeOfMap) { m_MapSize = sizeOfMap; }
 	void				PrintResult(HitResult hitResult);
 	void				PrintTurn(int turn);
 
 	void				RenderShipOnMap(ShipType shiptype, Position position);
 	void				RenderSpaceOnMap(ShipType shiptype, Position position);
-	void				RenderMapStatus(int gotoX, int gotoY, Map& map);
+	void				RenderMapStatus(int gotoX, int gotoY, MapStatus mapStatus);
 
 	void				SetCursorPosition(int x, int y);
 	void				SetColor(int fcolor, int bcolor);
@@ -33,7 +33,7 @@ private:
 	void				RenderLose();
 	void				RenderFiller(int consoleWidth, int titleWidth);
 	
-	int					m_SizeOfMap;
+	int					m_MapSize;
 	void				RenderMap(int gotoX, int gotoY);
 
 	void				SetConsoleSize(int width, int height);

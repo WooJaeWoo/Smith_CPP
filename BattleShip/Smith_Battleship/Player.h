@@ -10,21 +10,21 @@ public:
 	~Player();
 
 	void				MakeMaps(int mapSize);
-	Map*				GetMyMap() { return m_MyMap; }
-	Map*				GetEnemyMap() { return m_EnemyMap; }
 	void				SetPlayerType(PlayerType playerType) { m_PlayerType = playerType; }
 	void				SetNumShip(std::vector<int> numShip) { m_NumShip = numShip; }
 	void				MakeShips();
 	
-	void				SetShip(Ship& ship, Position position);
+	void				SetShip(Position position, ShipType shipType);
 	void				RandomSetShip(Ship& ship);
+	void				RenderUpdateMapStatus(int gotoX, int gotoY);
+	void				RenderRemain();
 
 	Coordinate			Attack();
 	Coordinate			RandomAttack();
 	HitResult			SendResult(Coordinate shot);
 
-	bool				InvalidPosition(Ship& ship, Position position);
 	bool				AttackableCheck(Coordinate shot);
+	bool				IsValidSet(Position position, ShipType shipType);
 
 private:
 	PlayerType			m_PlayerType;

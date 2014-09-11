@@ -30,3 +30,7 @@ int GetMaxHP(ShipType stype);
 Colors GetForeColor(ShipType type);
 Colors GetBackColor(ShipType type);
 std::string GetShipChar(ShipType type);
+
+void SetCursorPosition(int x, int y);
+void SetColor(int fcolor, int bcolor);
+void SetCursorAndColor(int x, int y, int fcolor, int bcolor);

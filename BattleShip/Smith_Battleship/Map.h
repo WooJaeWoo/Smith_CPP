@@ -1,21 +1,21 @@
 #pragma once
+
 class Map
 {
 public:
 	Map(int mapSize);
 	~Map();
 
-	void SetSizeOfMap(int mapSize) { m_MapSize = mapSize; }
-	void SetMapStatus(Position position, MapStatus mapStatus, ShipType shipType);
-	void SetMapStatus(Coordinate shot, MapStatus mapStatus);
+	void			SetSizeOfMap(int mapSize) { m_MapSize = mapSize; }
+	void			SetMapStatus(Position position, MapStatus mapStatus, ShipType shipType); //for Setting Ship
+	void			SetMapStatus(Coordinate shot, MapStatus mapStatus); //for attacking
+
+	int				GetMapSize() { return m_MapSize; }
+	MapStatus		GetMapStatus(int x, int y) { return m_Map[y][x]; }
 	
-	MapStatus GetMapStatus(int x, int y) { return m_Map[x][y]; }
-	
-	bool IsNOTHING(Position position, ShipType shipType);
-	bool OutOfBoundary(Coordinate coordinate);
+	void			RenderMapStatus(int gotoX, int gotoY);
 
 private:
-	int m_MapSize;
-	MapStatus** m_Map;
+	int				m_MapSize;
+	MapStatus**		m_Map;
 };
-

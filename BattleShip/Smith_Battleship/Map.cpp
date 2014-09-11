@@ -24,65 +24,73 @@ Map::~Map()
 	delete m_Map;
 }
 
-void Map::SetMapStatus(Coordinate shot, MapStatus mapStatus)
+void Map::SetMapStatus(Coordinate shot, MapStatus mapStatus) //for Attack
 {
-	m_Map[shot.m_X][shot.m_Y] = mapStatus;
+	m_Map[shot.m_Y][shot.m_X] = mapStatus;
 }
 
-void Map::SetMapStatus(Position position, MapStatus mapStatus, ShipType shipType)
+void Map::SetMapStatus(Position position, MapStatus mapStatus, ShipType shipType) //for SetShips
 {
 	for (int i = 0; i < GetMaxHP(shipType); ++i)
 	{
-		m_Map[position.m_X][position.m_Y] = mapStatus;
+		m_Map[position.m_Y][position.m_X] = mapStatus;
 		switch (position.m_direction)
 		{
 		case DOWN:
-			position.m_X++;
+			position.m_Y++;
 			break;
 		case UP:
-			position.m_X--;
-			break;
-		case LEFT:
 			position.m_Y--;
 			break;
+		case LEFT:
+			position.m_X--;
+			break;
 		case RIGHT:
-			position.m_Y++;
+			position.m_X++;
 			break;
 		}
 	}
 }
 
-bool Map::IsNOTHING(Position position, ShipType shipType)
+void Map::RenderMapStatus(int gotoX, int gotoY)
 {
-	int maxHP = SHIPTYPECOUNT + 1 - (int)shipType;
-	for (int i = 0; i < maxHP; ++i)
+	MapStatus mapStatus;
+	for (int i = 0; i < m_MapSize; ++i)
 	{
-		if (GetMapStatus(position.m_X, position.m_Y) != NOTHING)
-			return false;
-		switch (position.m_direction)
+		for (int j = 0; j < m_MapSize; ++j)
 		{
-		case DOWN:
-			position.m_X++;
-			break;
-		case UP:
-			position.m_X--;
-			break;
-		case RIGHT:
-			position.m_Y++;
-			break;
-		case LEFT:
-			position.m_Y--;
-			break;
+			mapStatus = m_Map[j][i];
+			switch (mapStatus)
+			{
+			case NOTHING:
+				SetCursorAndColor(i * 4 + gotoX, j * 2 + gotoY, BLACK, BLACK);
+				printf_s("  ");
+				break;
+			case SHIP_AIRCRAFT:
+				SetCursorAndColor(i * 4 + gotoX, j * 2 + gotoY, GetForeColor(AIRCRAFT), GetBackColor(AIRCRAFT));
+				printf_s("%s", GetShipChar(AIRCRAFT).c_str());
+				break;
+			case SHIP_BATTLESHIP:
+				SetCursorAndColor(i * 4 + gotoX, j * 2 + gotoY, GetForeColor(BATTLESHIP), GetBackColor(BATTLESHIP));
+				printf_s("%s", GetShipChar(BATTLESHIP).c_str());
+				break;
+			case SHIP_CRUISER:
+				SetCursorAndColor(i * 4 + gotoX, j * 2 + gotoY, GetForeColor(CRUISER), GetBackColor(CRUISER));
+				printf_s("%s", GetShipChar(CRUISER).c_str());
+				break;
+			case SHEP_DESTROYER:
+				SetCursorAndColor(i * 4 + gotoX, j * 2 + gotoY, GetForeColor(DESTROYER), GetBackColor(DESTROYER));
+				printf_s("%s", GetShipChar(DESTROYER).c_str());
+				break;
+			case ATTACKED_SHIP:
+				SetCursorAndColor(i * 4 + gotoX, j * 2 + gotoY, DARK_RED, BLACK);
+				printf_s("XX");
+				break;
+			case ATTACKED_MISS:
+				SetCursorAndColor(i * 4 + gotoX, j * 2 + gotoY, WHITE, BLACK);
+				printf_s("MM");
+				break;
+			}
 		}
 	}
-	return true;
-}
-
-bool Map::OutOfBoundary(Coordinate coordinate)
-{
-	if (coordinate.m_X < 0 || coordinate.m_X > m_MapSize - 1
-		|| coordinate.m_Y < 0 || coordinate.m_Y > m_MapSize - 1)
-		return true;
-	else
-		return false;
 }

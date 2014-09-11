@@ -15,13 +15,13 @@ HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
 void GameRenderer::InitializeRenderer()
 {
-	m_SizeOfMap = 8;
+	m_MapSize = 8;
 }
 
 void GameRenderer::RenderPages(GameStatus gameStatus)
 {
-	int mapWidth = (m_SizeOfMap + 3) * 4;
-	int mapHeight = (m_SizeOfMap + 2) * 2 + 8;
+	int mapWidth = (m_MapSize + 3) * 4;
+	int mapHeight = (m_MapSize + 2) * 2 + 8;
 	int menuSpace = 40;
 	int gotoX = mapWidth + 2;
 	int gotoY = 10;
@@ -30,7 +30,7 @@ void GameRenderer::RenderPages(GameStatus gameStatus)
 	switch (gameStatus)
 	{
 	case TITLE:
-		SetConsoleSize(82, 12);
+		SetConsoleSize(82, 13);
 		RenderBattleship();
 		RenderFiller(82, 81);
 		SetColor(GRAY, BLACK);
@@ -184,19 +184,19 @@ void GameRenderer::RenderMap(int gotoX, int gotoY)
 {
 	SetColor(WHITE, BLACK);
 	SetCursorPosition(0, gotoY);
-	for (int j = 0; j < m_SizeOfMap * 2 + 2; j++)
+	for (int j = 0; j < m_MapSize * 2 + 2; j++)
 	{
 		for (int k = 0; k < gotoX; k++)
 		{
 			printf_s(" ");
 		}
-		for (int i = 0; i < m_SizeOfMap + 2; i++)
+		for (int i = 0; i < m_MapSize + 2; i++)
 		{
 			if (j == 0)
 			{
 				if (i == 0)
 					printf_s("   ");
-				else if (i == m_SizeOfMap + 1)
+				else if (i == m_MapSize + 1)
 					printf_s("");
 				else
 					printf_s("   %c", '1' + i - 1);
@@ -207,18 +207,18 @@ void GameRenderer::RenderMap(int gotoX, int gotoY)
 					printf_s("   ");
 				else if (i == 1)
 					printf_s("┌");
-				else if (i == m_SizeOfMap + 1)
+				else if (i == m_MapSize + 1)
 					printf_s("─┐");
 				else if (i >= 2)
 					printf_s("─┬");
 			}
-			else if (j == m_SizeOfMap * 2 + 1)
+			else if (j == m_MapSize * 2 + 1)
 			{
 				if (i == 0)
 					printf_s("   ");
 				else if (i == 1)
 					printf_s("└");
-				else if (i == m_SizeOfMap + 1)
+				else if (i == m_MapSize + 1)
 					printf_s("─┘");
 				else if (i >= 2)
 					printf_s("─┴");
@@ -236,7 +236,7 @@ void GameRenderer::RenderMap(int gotoX, int gotoY)
 					printf_s("   ");
 				else if (i == 1)
 					printf_s("├");
-				else if (i == m_SizeOfMap + 1)
+				else if (i == m_MapSize + 1)
 					printf_s("─┤");
 				else if (i >= 2)
 					printf_s("─┼");
@@ -250,7 +250,7 @@ void GameRenderer::RenderShipOnMap(ShipType shiptype, Position position)
 {
 	for (int i = 0; i < GetMaxHP(shiptype); ++i)
 	{
-		if (position.m_X < 9 || position.m_X > 4 * (m_SizeOfMap - 1) + 9 || position.m_Y < 11 || position.m_Y > 2 * (m_SizeOfMap - 1) + 11)
+		if (position.m_X < 9 || position.m_X > 4 * (m_MapSize - 1) + 9 || position.m_Y < 11 || position.m_Y > 2 * (m_MapSize - 1) + 11)
 			return;
 		SetCursorAndColor(position.m_X, position.m_Y, GetForeColor(shiptype), GetBackColor(shiptype));
 		printf_s("%s", GetShipChar(shiptype).c_str());
@@ -276,7 +276,7 @@ void GameRenderer::RenderSpaceOnMap(ShipType shiptype, Position position)
 {
 	for (int i = 0; i < GetMaxHP(shiptype); ++i)
 	{
-		if (position.m_X < 9 || position.m_X > 4 * (m_SizeOfMap - 1) + 9 || position.m_Y < 11 || position.m_Y > 2 * (m_SizeOfMap - 1) + 11)
+		if (position.m_X < 9 || position.m_X > 4 * (m_MapSize - 1) + 9 || position.m_Y < 11 || position.m_Y > 2 * (m_MapSize - 1) + 11)
 			return;
 		SetCursorAndColor(position.m_X, position.m_Y, BLACK, BLACK);
 		printf_s("  ");
@@ -298,56 +298,16 @@ void GameRenderer::RenderSpaceOnMap(ShipType shiptype, Position position)
 	}
 }
 
-void GameRenderer::RenderMapStatus(int gotoX, int gotoY, Map& map)
-{
-	MapStatus currentMapStatus;
-	for (int i = 0; i < m_SizeOfMap; ++i)
-	{
-		for (int j = 0; j < m_SizeOfMap; ++j)
-		{
-			currentMapStatus = map.GetMapStatus(i, j);
-			switch (currentMapStatus)
-			{
-			case NOTHING:
-				break;
-			case SHIP_AIRCRAFT:
-				SetCursorAndColor(j * 4 + gotoX, i * 2 + gotoY, GetForeColor(AIRCRAFT), GetBackColor(AIRCRAFT));
-				printf_s("%s", GetShipChar(AIRCRAFT).c_str());
-				break;
-			case SHIP_BATTLESHIP:
-				SetCursorAndColor(j * 4 + gotoX, i * 2 + gotoY, GetForeColor(BATTLESHIP), GetBackColor(BATTLESHIP));
-				printf_s("%s", GetShipChar(BATTLESHIP).c_str());
-				break;
-			case SHIP_CRUISER:
-				SetCursorAndColor(j * 4 + gotoX, i * 2 + gotoY, GetForeColor(CRUISER), GetBackColor(CRUISER));
-				printf_s("%s", GetShipChar(CRUISER).c_str());
-				break;
-			case SHEP_DESTROYER:
-				SetCursorAndColor(j * 4 + gotoX, i * 2 + gotoY, GetForeColor(DESTROYER), GetBackColor(DESTROYER));
-				printf_s("%s", GetShipChar(DESTROYER).c_str());
-				break;
-			case ATTACKED_SHIP:
-				SetCursorAndColor(j * 4 + gotoX, i * 2 + gotoY, DARK_RED, BLACK);
-				printf_s("..");
-				break;
-			case ATTACKED_MISS:
-				SetCursorAndColor(j * 4 + gotoX, i * 2 + gotoY, WHITE, BLACK);
-				printf_s("MM");
-				break;
-			}
-		}
-	}
-}
 
 void GameRenderer::PrintTurn(int turn)
 {
-	if (turn <= 0 || turn > m_SizeOfMap * m_SizeOfMap)
+	if (turn < 0 || turn > m_MapSize * m_MapSize)
 	{
 		printf_s("ERROR: Invalid Turn");
 		return;
 	}
 	SetColor(WHITE, BLACK);
-	SetCursorPosition((m_SizeOfMap + 3) * 4 + 4, 20);
+	SetCursorPosition((m_MapSize + 3) * 4 + 4, 20);
 	printf_s("      %2d      ", turn);
 }
 
@@ -356,35 +316,35 @@ void GameRenderer::PrintResult(HitResult hitResult)
 	switch (hitResult)
 	{
 	case HIT:
-		SetCursorPosition((m_SizeOfMap + 3) * 4 + 4, 12);
+		SetCursorPosition((m_MapSize + 3) * 4 + 4, 12);
 		printf_s("     HIT!     ");
 		break;
 	case MISS:
-		SetCursorPosition((m_SizeOfMap + 3) * 4 + 4, 12);
+		SetCursorPosition((m_MapSize + 3) * 4 + 4, 12);
 		printf_s("     MISS     ");
 		break;
 	case DESTROY_AIRCRAFT:
-		SetCursorPosition((m_SizeOfMap + 3) * 4 + 4, 12);
+		SetCursorPosition((m_MapSize + 3) * 4 + 4, 12);
 		printf_s("   Aircraft   ");
-		SetCursorPosition((m_SizeOfMap + 3) * 4 + 4, 13);
+		SetCursorPosition((m_MapSize + 3) * 4 + 4, 13);
 		printf_s("  Destroyed!  ");
 		break;
 	case DESTROY_BATTLESHIP:
-		SetCursorPosition((m_SizeOfMap + 3) * 4 + 4, 12);
+		SetCursorPosition((m_MapSize + 3) * 4 + 4, 12);
 		printf_s("  Battleship  ");
-		SetCursorPosition((m_SizeOfMap + 3) * 4 + 4, 13);
+		SetCursorPosition((m_MapSize + 3) * 4 + 4, 13);
 		printf_s("  Destroyed!  ");
 		break;
 	case DESTROY_CRUISER:
-		SetCursorPosition((m_SizeOfMap + 3) * 4 + 4, 12);
+		SetCursorPosition((m_MapSize + 3) * 4 + 4, 12);
 		printf_s("   Cruiser    ");
-		SetCursorPosition((m_SizeOfMap + 3) * 4 + 4, 13);
+		SetCursorPosition((m_MapSize + 3) * 4 + 4, 13);
 		printf_s("  Destroyed!  ");
 		break;
 	case DESTROY_DESTROYER:
-		SetCursorPosition((m_SizeOfMap + 3) * 4 + 4, 12);
+		SetCursorPosition((m_MapSize + 3) * 4 + 4, 12);
 		printf_s("  Destroyer   ");
-		SetCursorPosition((m_SizeOfMap + 3) * 4 + 4, 13);
+		SetCursorPosition((m_MapSize + 3) * 4 + 4, 13);
 		printf_s("  Destroyed!  ");
 		break;
 	}
@@ -406,7 +366,7 @@ void GameRenderer::SetConsoleSize(int width, int height)
 void GameRenderer::SetCursorPosition(int x, int y)
 {
 	COORD pos = { x, y };
-	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+	SetConsoleCursorPosition(hConsole, pos);
 }
 
 void GameRenderer::SetColor(int fcolor, int bcolor)

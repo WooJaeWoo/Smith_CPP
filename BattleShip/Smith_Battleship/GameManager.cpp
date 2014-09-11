@@ -28,7 +28,6 @@ void GameManager::GameInitialize()
 	m_PlayerType = NONE;
 	m_MapSize = 8;
 	m_NumShip.clear();
-	m_Positions.clear();
 	m_Turn = 1;
 	m_GameRenderer->InitializeRenderer();
 	m_GameInterface->InitializeInterface();
@@ -63,11 +62,11 @@ void GameManager::GameRun()
 			m_GameStatus = SET_SHIP;
 			break;
 		case SET_SHIP:
-			m_Positions = m_GameInterface->GetShipPositions();
+			SendSetShipPos(); //To Player
+
 			m_GameStatus = GAMEPLAY;
 			break;
-		case GAMEPLAY:
-			
+		case GAMEPLAY:		
 			while (true)
 			{
 				/*Get HitResult and put it as argument
@@ -105,9 +104,37 @@ void GameManager::MakePlayers()
 	m_Player2->SetNumShip(m_NumShip);
 	m_Player1->MakeShips();
 	m_Player2->MakeShips();
-	m_P1_MyMap = m_Player1->GetMyMap();
-	m_P1_EnemyMap = m_Player1->GetEnemyMap();
-	m_P2_MyMap = m_Player2->GetMyMap();
-	m_P2_EnemyMap = m_Player2->GetEnemyMap();
 }
 
+void GameManager::SendSetShipPos()
+{
+	int shipType = 0;
+	for (int i = 0;; ++i)
+	{
+		if (shipType == 4)
+			break;
+		if (m_NumShip[shipType] == 0)
+		{
+			shipType++;
+		}
+		else
+		{
+			Position positionToSend;
+			while (true)
+			{
+				positionToSend = m_GameInterface->PositionToSetShip((ShipType)shipType);
+				if (m_Player1->IsValidSet(positionToSend, (ShipType)shipType))
+				{
+					m_Player1->SetShip(positionToSend, (ShipType)shipType);
+					m_Player1->RenderUpdateMapStatus(9, 11);
+					m_NumShip[shipType]--;
+					m_Player1->SetNumShip(m_NumShip);
+					m_Player1->RenderRemain();
+					break;
+				}
+				m_Player1->RenderUpdateMapStatus(9, 11);
+			}
+		}
+		m_Player1->RenderUpdateMapStatus(9, 11);
+	}
+}

@@ -13,13 +13,11 @@ Ship::~Ship()
 
 void Ship::AddPosition(Position position)
 {
-	position.m_X = tolower(position.m_X);
 	m_ShipCoords.push_back(position);
 }
 
 HitResult Ship::HitCheck(Coordinate shot)
 {
-	shot.m_X = tolower(shot.m_X);
 	for (int i = 0; i < m_MaxHP; i++)
 	{
 		if (m_ShipCoords[i].m_X == shot.m_X && m_ShipCoords[i].m_Y == shot.m_Y)
