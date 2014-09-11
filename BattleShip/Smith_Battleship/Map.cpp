@@ -24,6 +24,17 @@ Map::~Map()
 	delete m_Map;
 }
 
+void Map::InitializeMap()
+{
+	for (int i = 0; i < m_MapSize; ++i)
+	{
+		for (int j = 0; j < m_MapSize; ++j)
+		{
+			m_Map[i][j] = NOTHING;
+		}
+	}
+}
+
 void Map::SetMapStatus(Coordinate shot, MapStatus mapStatus) //for Attack
 {
 	m_Map[shot.m_Y][shot.m_X] = mapStatus;
@@ -94,3 +105,5 @@ void Map::RenderMapStatus(int gotoX, int gotoY)
 		}
 	}
 }
+
+

@@ -49,10 +49,13 @@ void GameManager::GameRun()
 			break;
 		case SELECT_PLAYER:
 			m_PlayerType = m_GameInterface->GetPlayerType();
-			if (m_PlayerType == NETWORK)
+			
+			if (m_PlayerType == AI)
+				m_GameStatus = SELECT_MAP_SHIP;
+			else if (m_PlayerType == NETWORK)
 				m_GameStatus = GAMEPLAY;
 			else
-				m_GameStatus = SELECT_MAP_SHIP;
+				exit(0);
 			break;
 		case SELECT_MAP_SHIP:
 			m_MapSize = m_GameInterface->GetMapSize();
@@ -62,16 +65,26 @@ void GameManager::GameRun()
 			m_GameStatus = SET_SHIP;
 			break;
 		case SET_SHIP:
-			SendSetShipPos(); //To Player
-
-			m_GameStatus = GAMEPLAY;
+			SendPositionAndSetShips(); //To Player
+			if (m_GameInterface->GameStartOrReset())
+				m_GameStatus = GAMEPLAY;
+			else
+			{
+				m_Player1->InitializeMyMap();
+				m_GameStatus = SET_SHIP;
+				//m_Player1->RandomSetShip()
+			}
 			break;
 		case GAMEPLAY:		
 			while (true)
 			{
+				m_Player1->RenderUpdateMapStatus((m_MapSize + 3) * 4 + 30, 11);
+				m_GameInterface->AttackInterface();
+
 				/*Get HitResult and put it as argument
 				m_GameRenderer->PrintResult()*/
-				m_GameRenderer->PrintTurn(m_Turn++);
+				m_GameRenderer->PrintTurn(m_Turn++, m_MapSize);
+				getchar();
 			
 			}
 			
@@ -106,8 +119,13 @@ void GameManager::MakePlayers()
 	m_Player2->MakeShips();
 }
 
-void GameManager::SendSetShipPos()
+void GameManager::SendPositionAndSetShips()
 {
+	m_NumShip = m_GameInterface->GetNumShip();
+	m_Player1->SetNumShip(m_NumShip);
+	m_Player2->SetNumShip(m_NumShip);
+	m_Player1->RenderUpdateMapStatus(9, 11);
+	m_Player1->RenderRemain();
 	int shipType = 0;
 	for (int i = 0;; ++i)
 	{
@@ -122,11 +140,13 @@ void GameManager::SendSetShipPos()
 			Position positionToSend;
 			while (true)
 			{
-				positionToSend = m_GameInterface->PositionToSetShip((ShipType)shipType);
+				if (m_GameInterface->GetSetOption())
+					positionToSend = m_GameInterface->PositionToSetShip((ShipType)shipType);
+				else
+					positionToSend = m_Player1->RandomSetShip((ShipType)shipType);
 				if (m_Player1->IsValidSet(positionToSend, (ShipType)shipType))
 				{
 					m_Player1->SetShip(positionToSend, (ShipType)shipType);
-					m_Player1->RenderUpdateMapStatus(9, 11);
 					m_NumShip[shipType]--;
 					m_Player1->SetNumShip(m_NumShip);
 					m_Player1->RenderRemain();

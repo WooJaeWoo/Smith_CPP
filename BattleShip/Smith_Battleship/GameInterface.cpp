@@ -147,21 +147,19 @@ void GameInterface::AttachInterface(GameStatus gameStatus)
 		printf_s("       Reset      \n");
 		SetCursorPosition(gotoX + 2, gotoY + 19);
 		printf_s("                  ");
-		SetCursorPosition(15, (m_MapSize + 2) * 2 + 9);
-		RenderRemain();
+		SetColor(WHITE, BLACK);
 		menuSelector = MenuSelect(2, gotoX, gotoY, currentY, gameStatus);
 		if (menuSelector == 0)
 		{
-
+			m_ManualOrRandom = true;
 		}
 		else if (menuSelector == 1)
 		{
-			//RandomSet
+			m_ManualOrRandom = false;
 		}
 		SetColor(WHITE, BLACK);
 		break;
 	case GAMEPLAY:
-		AttackInterface();
 		break;
 	case WIN:
 
@@ -368,28 +366,6 @@ bool GameInterface::CheckEnoughSize()
 		return false;
 }
 
-void GameInterface::RenderRemain()
-{
-	int sumShip = GetSumShip();
-	SetCursorAndColor(15, (m_MapSize + 2) * 2 + 9, BLACK, BLACK);
-	for (int i = 0; i < sumShip + 1; ++i)
-	{
-		printf_s("   ");
-	}
-	SetCursorPosition(15, (m_MapSize + 2) * 2 + 9);
-	SetColor(WHITE, BLACK);
-	printf_s(" ");
-	for (int i = 0; i < SHIPTYPECOUNT; i++)
-	{
-		for (int j = 0; j < m_NumShip[i]; j++)
-		{
-			SetColor(GetForeColor((ShipType)i), GetBackColor((ShipType)i));
-			printf_s("%s", GetShipChar((ShipType)i).c_str());
-			SetColor(WHITE, BLACK);
-			printf_s(" ");
-		}
-	}
-}
 
 Position GameInterface::PositionToSetShip(ShipType shipType)
 {
@@ -513,4 +489,69 @@ int GameInterface::GetSumShip()
 		sumShip += m_NumShip[i];
 	}
 	return sumShip;
+}
+
+bool GameInterface::GameStartOrReset()
+{
+	bool startOrReset = true;
+	int gotoX = (m_MapSize + 3) * 4 + 4;
+	int gotoY = 7;
+	SetColor(BLACK, GREEN);
+	SetCursorPosition(gotoX + 2, gotoY + 12);
+	printf_s("                  \n");
+	SetCursorPosition(gotoX + 2, gotoY + 13);
+	printf_s("    Start Game    \n");
+	SetCursorPosition(gotoX + 2, gotoY + 14);
+	printf_s("                  \n");
+	while (true)
+	{
+		int keyinput;
+		keyinput = _getch();
+		if (keyinput == -32)
+		{
+			keyinput = _getch();
+		}
+		if (keyinput == KEY_DOWN && startOrReset == true)
+		{
+			SetColor(BLACK, WHITE);
+			SetCursorPosition(gotoX + 2, gotoY + 12);
+			printf_s("                  \n");
+			SetCursorPosition(gotoX + 2, gotoY + 13);
+			printf_s("    Start Game    \n");
+			SetCursorPosition(gotoX + 2, gotoY + 14);
+			printf_s("                  \n");
+			SetColor(BLACK, DARK_RED);
+			SetCursorPosition(gotoX + 2, gotoY + 17);
+			printf_s("                  \n");
+			SetCursorPosition(gotoX + 2, gotoY + 18);
+			printf_s("       Reset      \n");
+			SetCursorPosition(gotoX + 2, gotoY + 19);
+			printf_s("                  ");
+			startOrReset = false;
+		}
+		else if (keyinput == KEY_UP && startOrReset == false)
+		{
+			SetColor(BLACK, GREEN);
+			SetCursorPosition(gotoX + 2, gotoY + 12);
+			printf_s("                  \n");
+			SetCursorPosition(gotoX + 2, gotoY + 13);
+			printf_s("    Start Game    \n");
+			SetCursorPosition(gotoX + 2, gotoY + 14);
+			printf_s("                  \n");
+			SetColor(BLACK, WHITE);
+			SetCursorPosition(gotoX + 2, gotoY + 17);
+			printf_s("                  \n");
+			SetCursorPosition(gotoX + 2, gotoY + 18);
+			printf_s("       Reset      \n");
+			SetCursorPosition(gotoX + 2, gotoY + 19);
+			printf_s("                  ");
+			startOrReset = true;
+		}
+		else if (keyinput == ENTER)
+		{
+			break;
+		}
+	}
+	SetColor(WHITE, BLACK);
+	return startOrReset;
 }

@@ -13,9 +13,9 @@ public:
 	void				InitializeRenderer();
 	void				RenderPages(GameStatus gameStatus);
 
-	void				SetSizeOfMap(int sizeOfMap) { m_MapSize = sizeOfMap; }
+	void				SetSizeOfMap(int MapSize) { m_MapSize = MapSize; }
 	void				PrintResult(HitResult hitResult);
-	void				PrintTurn(int turn);
+	void				PrintTurn(int turn, int mapSize);
 
 	void				RenderShipOnMap(ShipType shiptype, Position position);
 	void				RenderSpaceOnMap(ShipType shiptype, Position position);
@@ -26,7 +26,7 @@ public:
 	void				SetCursorAndColor(int x, int y, int fcolor, int bcolor);
 
 private:
-	void				RenderBattleship();
+	void				RenderBattleshipTitle();
 	void				RenderSetting();
 	void				RenderGamePlay();
 	void				RenderWin();

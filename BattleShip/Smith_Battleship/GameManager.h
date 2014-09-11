@@ -17,7 +17,7 @@ public:
 private:
 	void					GameInitialize();
 	void					MakePlayers();
-	void					SendSetShipPos();
+	void					SendPositionAndSetShips();
 
 	GameStatus				m_GameStatus;
 	PlayerType				m_PlayerType;

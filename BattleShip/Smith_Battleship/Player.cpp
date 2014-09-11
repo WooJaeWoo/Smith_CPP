@@ -54,28 +54,6 @@ void Player::MakeShips()
 void Player::SetShip(Position position, ShipType shipType)
 {
 	m_MyMap->SetMapStatus(position, (MapStatus)((int)shipType + 1), shipType);
-	// 	for (int i = 0; i < GetMaxHP(shipType); ++i)
-	// 	{
-	// 		ship.AddPosition(position);
-	// 		switch (position.m_direction)
-	// 		{
-	// 		case UP:
-	// 			position.m_Y--;
-	// 			break;
-	// 		case DOWN:
-	// 			position.m_Y++;
-	// 			break;
-	// 		case LEFT:
-	// 			position.m_X--;
-	// 			break;
-	// 		case RIGHT:
-	// 			position.m_X++;
-	// 			break;
-	// 		default:
-	// 			printf_s("Error: invalid direction");
-	// 			break;
-	// 		}
-	// 	}
 }
 
 void Player::RenderUpdateMapStatus(int gotoX, int gotoY)
@@ -83,9 +61,13 @@ void Player::RenderUpdateMapStatus(int gotoX, int gotoY)
 	m_MyMap->RenderMapStatus(gotoX, gotoY);
 }
 
-void Player::RandomSetShip(Ship& ship)
+Position Player::RandomSetShip(ShipType shipType)
 {
-
+	Position position;
+	position.m_X = rand() % m_MyMap->GetMapSize();
+	position.m_Y = rand() % m_MyMap->GetMapSize();
+	position.m_direction = (Direction)(rand() % 4);
+	return position;
 }
 
 /*Coordinate Player::Attack()
@@ -169,4 +151,10 @@ void Player::RenderRemain()
 			printf_s(" ");
 		}
 	}
+}
+
+void Player::InitializeMyMap()
+{
+	//배 좌표 클리어
+	m_MyMap->InitializeMap();
 }

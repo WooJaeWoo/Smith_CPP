@@ -14,19 +14,21 @@ public:
 	PlayerType				GetPlayerType() { return m_PlayerType; }
 	int						GetMapSize() { return m_MapSize; }
 	std::vector<int>		GetNumShip() { return m_NumShip; }
+	bool					GetSetOption() { return m_ManualOrRandom; }
 	GameRenderer*			GetGameRenderer() { return m_GameRenderer; }
 	Position				PositionToSetShip(ShipType shipType);
+	Coordinate				AttackInterface();
+	bool					GameStartOrReset();
 
 private:
 	GameRenderer*			m_GameRenderer;
 	PlayerType				m_PlayerType;
 	int						m_MapSize;
 	std::vector<int>		m_NumShip;
+	bool					m_ManualOrRandom;
 
 	int						MenuSelect(int menuSize, int gotoX, int gotoY, int currentY, GameStatus gameStatus);
 	bool					CheckEnoughSize();
-	Coordinate				AttackInterface();
 	int						GetSumShip();
-	void					RenderRemain();
 };
 

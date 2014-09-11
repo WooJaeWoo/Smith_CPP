@@ -31,7 +31,7 @@ void GameRenderer::RenderPages(GameStatus gameStatus)
 	{
 	case TITLE:
 		SetConsoleSize(82, 13);
-		RenderBattleship();
+		RenderBattleshipTitle();
 		RenderFiller(82, 81);
 		SetColor(GRAY, BLACK);
 		printf_s("\n   SMITH GAMES \t\t\t\t\t\t\t\t ver1.0\n");
@@ -47,7 +47,7 @@ void GameRenderer::RenderPages(GameStatus gameStatus)
 		RenderFiller(62, 61);
 		break;
 	case SET_SHIP:
-		SetConsoleSize(mapWidth + menuSpace, mapHeight + 5);
+		SetConsoleSize(mapWidth + menuSpace, mapHeight + 6);
 		RenderSetting();
 		RenderFiller(mapWidth + menuSpace, 61);
 		SetColor(WHITE, BLACK);
@@ -106,7 +106,7 @@ void GameRenderer::RenderPages(GameStatus gameStatus)
 
 
 //Functions Rendering Title Elements
-void GameRenderer::RenderBattleship()
+void GameRenderer::RenderBattleshipTitle()
 {
 	SetColor(BLACK, WHITE);
 	printf_s("                                                                                 \n");
@@ -299,15 +299,15 @@ void GameRenderer::RenderSpaceOnMap(ShipType shiptype, Position position)
 }
 
 
-void GameRenderer::PrintTurn(int turn)
+void GameRenderer::PrintTurn(int turn, int mapSize)
 {
-	if (turn < 0 || turn > m_MapSize * m_MapSize)
+	if (turn < 0 || turn > mapSize * mapSize)
 	{
 		printf_s("ERROR: Invalid Turn");
 		return;
 	}
 	SetColor(WHITE, BLACK);
-	SetCursorPosition((m_MapSize + 3) * 4 + 4, 20);
+	SetCursorPosition((mapSize + 3) * 4 + 4, 20);
 	printf_s("      %2d      ", turn);
 }
 

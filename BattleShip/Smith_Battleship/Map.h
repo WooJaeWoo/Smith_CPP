@@ -5,7 +5,9 @@ class Map
 public:
 	Map(int mapSize);
 	~Map();
-
+	
+	void			InitializeMap();
+	
 	void			SetSizeOfMap(int mapSize) { m_MapSize = mapSize; }
 	void			SetMapStatus(Position position, MapStatus mapStatus, ShipType shipType); //for Setting Ship
 	void			SetMapStatus(Coordinate shot, MapStatus mapStatus); //for attacking

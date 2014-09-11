@@ -9,13 +9,15 @@ public:
 	Player();
 	~Player();
 
+	void				InitializeMyMap();
+
 	void				MakeMaps(int mapSize);
 	void				SetPlayerType(PlayerType playerType) { m_PlayerType = playerType; }
 	void				SetNumShip(std::vector<int> numShip) { m_NumShip = numShip; }
 	void				MakeShips();
 	
 	void				SetShip(Position position, ShipType shipType);
-	void				RandomSetShip(Ship& ship);
+	Position			RandomSetShip(ShipType shipType);
 	void				RenderUpdateMapStatus(int gotoX, int gotoY);
 	void				RenderRemain();
 
