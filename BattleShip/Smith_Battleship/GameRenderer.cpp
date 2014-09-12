@@ -89,7 +89,6 @@ void GameRenderer::RenderPages(GameStatus gameStatus)
 		SetCursorPosition(gotoX, gotoY + 12);
 		printf_s("└───────┘");
 		break;
-
 	case WIN:
 		SetConsoleSize(62, 12);
 		RenderWin();

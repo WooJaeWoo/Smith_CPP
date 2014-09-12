@@ -99,12 +99,10 @@ bool Player::IsValidSet(Position position, ShipType shipType)
 		if (position.m_X < 0 || position.m_X > m_MyMap->GetMapSize() - 1
 			|| position.m_Y < 0 || position.m_Y > m_MyMap->GetMapSize() - 1)
 		{
-			m_MyMap->RenderMapStatus(9, 11);
 			return false;
 		}
 		if (m_MyMap->GetMapStatus(position.m_X, position.m_Y) != NOTHING)
 		{
-			m_MyMap->RenderMapStatus(9, 11);
 			return false;
 		}
 		switch (position.m_direction)
@@ -153,7 +151,7 @@ void Player::RenderRemain()
 	}
 }
 
-void Player::InitializeMyMap()
+void Player::InitializeMyStatus()
 {
 	//배 좌표 클리어
 	m_MyMap->InitializeMap();

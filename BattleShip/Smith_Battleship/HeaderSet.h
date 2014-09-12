@@ -74,9 +74,16 @@ enum ShipType
 enum PlayerType
 {
 	NONE,
-	PVP,
+	PLAYER,
 	AI,
 	NETWORK,
+};
+
+enum GamePlayType
+{
+	PVP,
+	PVA,
+	PVN,
 };
 
 enum Colors

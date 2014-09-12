@@ -17,10 +17,10 @@ public:
 private:
 	void					GameInitialize();
 	void					MakePlayers();
-	void					SendPositionAndSetShips();
+	void					ReadyToFight(Player* player);
 
 	GameStatus				m_GameStatus;
-	PlayerType				m_PlayerType;
+	GamePlayType			m_GameType;
 	int						m_MapSize;
 	std::vector<int>		m_NumShip;
 	int						m_Turn;

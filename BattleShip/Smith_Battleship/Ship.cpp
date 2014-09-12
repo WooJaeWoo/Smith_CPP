@@ -11,9 +11,9 @@ Ship::~Ship()
 {
 }
 
-void Ship::AddPosition(Position position)
+void Ship::AddPosition(Coordinate coordinate)
 {
-	m_ShipCoords.push_back(position);
+	m_ShipCoords.push_back(coordinate);
 }
 
 HitResult Ship::HitCheck(Coordinate shot)

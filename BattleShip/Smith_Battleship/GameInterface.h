@@ -11,7 +11,7 @@ public:
 
 	void					InitializeInterface();
 	void					AttachInterface(GameStatus gamestatus);
-	PlayerType				GetPlayerType() { return m_PlayerType; }
+	GamePlayType				GetGameType() { return m_GameType; }
 	int						GetMapSize() { return m_MapSize; }
 	std::vector<int>		GetNumShip() { return m_NumShip; }
 	bool					GetSetOption() { return m_ManualOrRandom; }
@@ -22,7 +22,7 @@ public:
 
 private:
 	GameRenderer*			m_GameRenderer;
-	PlayerType				m_PlayerType;
+	GamePlayType			m_GameType;
 	int						m_MapSize;
 	std::vector<int>		m_NumShip;
 	bool					m_ManualOrRandom;

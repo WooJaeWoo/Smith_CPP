@@ -9,10 +9,11 @@ public:
 	Player();
 	~Player();
 
-	void				InitializeMyMap();
+	void				InitializeMyStatus();
 
 	void				MakeMaps(int mapSize);
 	void				SetPlayerType(PlayerType playerType) { m_PlayerType = playerType; }
+	PlayerType			GetPlayerType() { return m_PlayerType; }
 	void				SetNumShip(std::vector<int> numShip) { m_NumShip = numShip; }
 	void				MakeShips();
 	
@@ -34,4 +35,5 @@ private:
 	Map*				m_EnemyMap;
 	std::vector<int>	m_NumShip;
 	std::vector<Ship*>	m_ShipList;
+
 };

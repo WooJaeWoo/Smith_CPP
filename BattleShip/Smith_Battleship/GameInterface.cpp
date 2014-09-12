@@ -15,7 +15,7 @@ GameInterface::~GameInterface()
 
 void GameInterface::InitializeInterface()
 {
-	m_PlayerType = NONE;
+	m_GameType = PVA;
 	m_MapSize = 8;
 	m_NumShip.clear();
 	m_NumShip.push_back(1);
@@ -69,15 +69,15 @@ void GameInterface::AttachInterface(GameStatus gameStatus)
 		menuSelector = MenuSelect(3, gotoX, gotoY, currentY, gameStatus);
 		if (menuSelector == 0)
 		{
-			m_PlayerType = PVP;
+			m_GameType = PVP;
 		}
 		else if (menuSelector == 1)
 		{
-			m_PlayerType = AI;
+			m_GameType = PVA;
 		}
 		else if (menuSelector == 2)
 		{
-			m_PlayerType = NETWORK;
+			m_GameType = PVN;
 		}
 		break;
 	case SELECT_MAP_SHIP:

@@ -25,7 +25,7 @@ GameManager::~GameManager()
 
 void GameManager::GameInitialize()
 {
-	m_PlayerType = NONE;
+	m_GameType = PVA;
 	m_MapSize = 8;
 	m_NumShip.clear();
 	m_Turn = 1;
@@ -48,13 +48,13 @@ void GameManager::GameRun()
 			m_GameStatus = SELECT_PLAYER;
 			break;
 		case SELECT_PLAYER:
-			m_PlayerType = m_GameInterface->GetPlayerType();
+			m_GameType = m_GameInterface->GetGameType();
 			
-			if (m_PlayerType == AI)
+			if (m_GameType == PVA)
 				m_GameStatus = SELECT_MAP_SHIP;
-			else if (m_PlayerType == NETWORK)
+			else if (m_GameType == PVN)
 				m_GameStatus = GAMEPLAY;
-			else
+			else if (m_GameType == PVP) //SEALED!!!
 				exit(0);
 			break;
 		case SELECT_MAP_SHIP:
@@ -65,38 +65,37 @@ void GameManager::GameRun()
 			m_GameStatus = SET_SHIP;
 			break;
 		case SET_SHIP:
-			SendPositionAndSetShips(); //To Player
+			ReadyToFight(m_Player1);
+			ReadyToFight(m_Player2);
 			if (m_GameInterface->GameStartOrReset())
 				m_GameStatus = GAMEPLAY;
 			else
 			{
-				m_Player1->InitializeMyMap();
+				m_Player1->InitializeMyStatus();
+				m_Player2->InitializeMyStatus();
 				m_GameStatus = SET_SHIP;
-				//m_Player1->RandomSetShip()
 			}
 			break;
-		case GAMEPLAY:		
+		case GAMEPLAY:
+		{
 			while (true)
 			{
 				m_Player1->RenderUpdateMapStatus((m_MapSize + 3) * 4 + 30, 11);
 				m_GameInterface->AttackInterface();
+				m_GameRenderer->PrintResult(HIT);
+				m_GameRenderer->PrintTurn(m_Turn++, m_MapSize);	
+			}
 
-				/*Get HitResult and put it as argument
-				m_GameRenderer->PrintResult()*/
-				m_GameRenderer->PrintTurn(m_Turn++, m_MapSize);
-				getchar();
-			
-			}
-			
-			/*if ()
-			{
-				m_GameStatus = WIN;
-			}
-			else
-			{
-				m_GameStatus = LOSE;
-			}*/
+						 /*if ()
+						 {
+						 m_GameStatus = WIN;
+						 }
+						 else
+						 {
+						 m_GameStatus = LOSE;
+						 }*/
 			break;
+		}
 		case WIN:
 			m_GameStatus = LOSE;
 			break;
@@ -109,8 +108,21 @@ void GameManager::GameRun()
 
 void GameManager::MakePlayers()
 {
-	m_Player1->SetPlayerType(m_PlayerType);
-	m_Player2->SetPlayerType(m_PlayerType);
+	if (m_GameType == PVP)
+	{
+		m_Player1->SetPlayerType(PLAYER);
+		m_Player2->SetPlayerType(PLAYER);
+	}
+	else if (m_GameType == PVA)
+	{
+		m_Player1->SetPlayerType(PLAYER);
+		m_Player2->SetPlayerType(AI);
+	}
+	else if (m_GameType == PVN)
+	{
+		m_Player1->SetPlayerType(AI);
+		m_Player2->SetPlayerType(NETWORK);
+	}
 	m_Player1->MakeMaps(m_MapSize);
 	m_Player2->MakeMaps(m_MapSize);
 	m_Player1->SetNumShip(m_NumShip);
@@ -119,13 +131,15 @@ void GameManager::MakePlayers()
 	m_Player2->MakeShips();
 }
 
-void GameManager::SendPositionAndSetShips()
+void GameManager::ReadyToFight(Player* player)
 {
 	m_NumShip = m_GameInterface->GetNumShip();
-	m_Player1->SetNumShip(m_NumShip);
-	m_Player2->SetNumShip(m_NumShip);
-	m_Player1->RenderUpdateMapStatus(9, 11);
-	m_Player1->RenderRemain();
+	player->SetNumShip(m_NumShip);
+	if (player->GetPlayerType() == PLAYER)
+	{
+		player->RenderUpdateMapStatus(9, 11);
+		player->RenderRemain();
+	}
 	int shipType = 0;
 	for (int i = 0;; ++i)
 	{
@@ -140,21 +154,22 @@ void GameManager::SendPositionAndSetShips()
 			Position positionToSend;
 			while (true)
 			{
-				if (m_GameInterface->GetSetOption())
+				if (player->GetPlayerType() == PLAYER && m_GameInterface->GetSetOption() == true)
 					positionToSend = m_GameInterface->PositionToSetShip((ShipType)shipType);
 				else
-					positionToSend = m_Player1->RandomSetShip((ShipType)shipType);
-				if (m_Player1->IsValidSet(positionToSend, (ShipType)shipType))
+					positionToSend = player->RandomSetShip((ShipType)shipType);
+				if (player->IsValidSet(positionToSend, (ShipType)shipType))
 				{
-					m_Player1->SetShip(positionToSend, (ShipType)shipType);
+					player->SetShip(positionToSend, (ShipType)shipType);
 					m_NumShip[shipType]--;
-					m_Player1->SetNumShip(m_NumShip);
-					m_Player1->RenderRemain();
+					player->SetNumShip(m_NumShip);
+					if (player->GetPlayerType() == PLAYER) player->RenderRemain();
+					//¹è ÁÂÇ¥ Çª½Ã
 					break;
 				}
-				m_Player1->RenderUpdateMapStatus(9, 11);
+				if (player->GetPlayerType() == PLAYER) player->RenderUpdateMapStatus(9, 11);
 			}
 		}
-		m_Player1->RenderUpdateMapStatus(9, 11);
+		if (player->GetPlayerType() == PLAYER) player->RenderUpdateMapStatus(9, 11);
 	}
 }
