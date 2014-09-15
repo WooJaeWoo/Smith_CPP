@@ -24,7 +24,7 @@ Map::~Map()
 	delete m_Map;
 }
 
-void Map::InitializeMap()
+void Map::ResetMap()
 {
 	for (int i = 0; i < m_MapSize; ++i)
 	{
@@ -89,21 +89,19 @@ void Map::RenderMapStatus(int gotoX, int gotoY)
 				SetCursorAndColor(i * 4 + gotoX, j * 2 + gotoY, GetForeColor(CRUISER), GetBackColor(CRUISER));
 				printf_s("%s", GetShipChar(CRUISER).c_str());
 				break;
-			case SHEP_DESTROYER:
+			case SHIP_DESTROYER:
 				SetCursorAndColor(i * 4 + gotoX, j * 2 + gotoY, GetForeColor(DESTROYER), GetBackColor(DESTROYER));
 				printf_s("%s", GetShipChar(DESTROYER).c_str());
 				break;
 			case ATTACKED_SHIP:
-				SetCursorAndColor(i * 4 + gotoX, j * 2 + gotoY, DARK_RED, BLACK);
-				printf_s("XX");
+				SetCursorAndColor(i * 4 + gotoX, j * 2 + gotoY, BLACK, DARK_RED);
+				printf_s("£È");
 				break;
 			case ATTACKED_MISS:
-				SetCursorAndColor(i * 4 + gotoX, j * 2 + gotoY, WHITE, BLACK);
-				printf_s("MM");
+				SetCursorAndColor(i * 4 + gotoX, j * 2 + gotoY, WHITE, GRAY);
+				printf_s("£Í");
 				break;
 			}
 		}
 	}
 }
-
-

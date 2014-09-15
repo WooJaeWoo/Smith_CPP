@@ -15,9 +15,24 @@ public:
 	void					GameRun();
 
 private:
-	void					GameInitialize();
-	void					MakePlayers();
+	void					InitializeGame();
+	void					ResetGame();
+	void					DefaultGame();
+
+	void					SetPlayerType();
+	void					MakeMapAndShip();
 	void					ReadyToFight(Player* player);
+
+	bool					AttackFlow(Player* player1, Player* player2);
+	void					PVPSetShip();
+	void					PVASetShip();
+	void					AVNSetShip();
+	int						PVPGameFlow();
+	int						PVAGameFlow();
+	//void					AVNGameFlow();
+
+	void					WriteGameResult(int who);
+	bool					LastMenuDecision(int lastMenu);
 
 	GameStatus				m_GameStatus;
 	GamePlayType			m_GameType;

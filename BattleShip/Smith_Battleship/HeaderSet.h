@@ -12,6 +12,7 @@
 
 enum GameStatus
 {
+	GAMESTART,
 	TITLE,
 	SELECT_PLAYER,
 	SELECT_MAP_SHIP,
@@ -48,13 +49,14 @@ enum MapStatus
 	SHIP_AIRCRAFT,
 	SHIP_BATTLESHIP,
 	SHIP_CRUISER,
-	SHEP_DESTROYER,
+	SHIP_DESTROYER,
 	ATTACKED_SHIP,
 	ATTACKED_MISS,
 };
 
 enum HitResult
 {
+	WRONG,
 	HIT,
 	MISS,
 	DESTROY_AIRCRAFT,
@@ -83,7 +85,7 @@ enum GamePlayType
 {
 	PVP,
 	PVA,
-	PVN,
+	AVN,
 };
 
 enum Colors

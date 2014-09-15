@@ -7,21 +7,60 @@
 #include "Cruiser.h"
 #include "Destroyer.h"
 
+int Player::m_IDSeed = 0;
+
 Player::Player()
 {
+	m_PlayerID = (m_IDSeed++) % 2;
 }
-
 
 Player::~Player()
 {
+	ClearPlayer();
+}
+
+void Player::InitializePlayer()
+{
+	ClearPlayer();
+}
+
+void Player::ClearPlayer()
+{
 	delete m_MyMap;
 	delete m_EnemyMap;
-	for (auto Ship : m_ShipList)
+	for (auto ship : m_ShipList)
 	{
-		delete Ship;
-		Ship = nullptr;
+		delete ship;
+		ship = nullptr;
 	}
 	m_ShipList.clear();
+	m_NumShip.clear();
+	m_ShipList.reserve(0);
+	m_ShipPositions.clear();
+}
+
+void Player::ResetPlayer()
+{
+	m_MyMap->ResetMap();
+	m_EnemyMap->ResetMap();
+	for (std::vector<Ship*>::iterator it = m_ShipList.begin(); it != m_ShipList.end(); ++it)
+	{
+		(*it)->ResetShip();
+	}
+	m_ShipPositions.clear();
+}
+
+void Player::DefaultPlayer()
+{
+	MakeMaps(8);
+	m_MyMap->SetSizeOfMap(8);
+	m_EnemyMap->SetSizeOfMap(8);
+	m_ShipList.clear();
+	m_ShipList.push_back(new Aircraft());
+	m_ShipList.push_back(new Battleship());
+	m_ShipList.push_back(new Cruiser());
+	m_ShipList.push_back(new Destroyer());
+	m_ShipList.push_back(new Destroyer());
 }
 
 void Player::MakeMaps(int mapSize)
@@ -54,11 +93,17 @@ void Player::MakeShips()
 void Player::SetShip(Position position, ShipType shipType)
 {
 	m_MyMap->SetMapStatus(position, (MapStatus)((int)shipType + 1), shipType);
+	m_ShipPositions.push_back(position);
 }
 
-void Player::RenderUpdateMapStatus(int gotoX, int gotoY)
+void Player::RenderUpdateMyMapStatus(int gotoX, int gotoY)
 {
 	m_MyMap->RenderMapStatus(gotoX, gotoY);
+}
+
+void Player::RenderUpdateEnemyMapStatus(int gotoX, int gotoY)
+{
+	m_EnemyMap->RenderMapStatus(gotoX, gotoY);
 }
 
 Position Player::RandomSetShip(ShipType shipType)
@@ -70,26 +115,39 @@ Position Player::RandomSetShip(ShipType shipType)
 	return position;
 }
 
-/*Coordinate Player::Attack()
+HitResult Player::SendResult(Coordinate shot)
 {
-
+	HitResult hitResult;
+	if (m_MyMap->GetMapStatus(shot.m_X, shot.m_Y) == ATTACKED_SHIP || m_MyMap->GetMapStatus(shot.m_X, shot.m_Y) == ATTACKED_MISS)
+		return WRONG;
+	for (auto ship : m_ShipList)
+	{
+		hitResult = ship->HitCheck(shot);
+		if (hitResult != MISS)
+		{
+			m_MyMap->SetMapStatus(shot, ATTACKED_SHIP);
+			return hitResult;
+		}
+	}
+	m_MyMap->SetMapStatus(shot, ATTACKED_MISS);
+	return MISS;
 }
 
 Coordinate Player::RandomAttack()
 {
-
+	Coordinate randShot;
+	randShot.m_X = rand() % m_MyMap->GetMapSize();
+	randShot.m_Y = rand() % m_MyMap->GetMapSize();
+	return randShot;
 }
 
-HitResult Player::SendResult(Coordinate shot)
+Coordinate Player::AIAttack(HitResult hitResult)
 {
-
+	Coordinate shot;
+	if (hitResult == DESTROY_AIRCRAFT || hitResult == DESTROY_BATTLESHIP || hitResult == DESTROY_CRUISER || hitResult == DESTROY_DESTROYER || hitResult == MISS)
+	shot = RandomAttack();
+	return shot;
 }
-
-bool Player::AttackableCheck(Coordinate shot)
-{
-
-}*/
-
 
 bool Player::IsValidSet(Position position, ShipType shipType)
 {
@@ -151,8 +209,45 @@ void Player::RenderRemain()
 	}
 }
 
-void Player::InitializeMyStatus()
+void Player::SetShipCoords()
 {
-	//배 좌표 클리어
-	m_MyMap->InitializeMap();
+	int i = 0;
+	for (auto ship : m_ShipList)
+	{
+		ship->AddPosition(m_ShipPositions[i++]);
+	}
 }
+
+void Player::MarkOnEnemyMap(Coordinate shot, HitResult hitResult)
+{
+	if (hitResult != MISS)
+		m_EnemyMap->SetMapStatus(shot, ATTACKED_SHIP);
+	else
+		m_EnemyMap->SetMapStatus(shot, ATTACKED_MISS);
+}
+
+bool Player::GameOverCheck(HitResult hitResult)
+{
+	switch (hitResult)
+	{
+	case DESTROY_AIRCRAFT:
+		m_NumShip[(int)AIRCRAFT]--;
+		break;
+	case DESTROY_BATTLESHIP:
+		m_NumShip[(int)BATTLESHIP]--;
+		break;
+	case DESTROY_CRUISER:
+		m_NumShip[(int)CRUISER]--;
+		break;
+	case DESTROY_DESTROYER:
+		m_NumShip[(int)DESTROYER]--;
+		break;
+	}
+	for (int i = 0; i < SHIPTYPECOUNT; ++i)
+	{
+		if (m_NumShip[i] != 0)
+			return false;
+	}
+	return true;
+}
+

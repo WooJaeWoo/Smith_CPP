@@ -11,9 +11,36 @@ Ship::~Ship()
 {
 }
 
-void Ship::AddPosition(Coordinate coordinate)
+void Ship::ResetShip()
 {
-	m_ShipCoords.push_back(coordinate);
+	m_CurrentHP = m_MaxHP;
+	m_ShipCoords.clear();
+}
+
+void Ship::AddPosition(Position position)
+{
+	Coordinate shipCoord;
+	shipCoord.m_X = position.m_X;
+	shipCoord.m_Y = position.m_Y;
+	for (int i = 0; i < m_MaxHP; ++i)
+	{
+		m_ShipCoords.push_back(shipCoord);
+		switch (position.m_direction)
+		{
+		case DOWN:
+			shipCoord.m_Y++;
+			break;
+		case UP:
+			shipCoord.m_Y--;
+			break;
+		case LEFT:
+			shipCoord.m_X--;
+			break;
+		case RIGHT:
+			shipCoord.m_X++;
+			break;
+		}
+	}
 }
 
 HitResult Ship::HitCheck(Coordinate shot)

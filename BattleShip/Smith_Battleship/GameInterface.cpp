@@ -6,6 +6,11 @@
 GameInterface::GameInterface()
 {
 	m_GameRenderer = new GameRenderer();
+	m_GameType = PVA;
+	m_MapSize = 8;
+	m_NumShip.clear();
+	m_ManualOrRandom = false;
+	m_LastMenu = -1;
 }
 
 GameInterface::~GameInterface()
@@ -16,6 +21,24 @@ GameInterface::~GameInterface()
 void GameInterface::InitializeInterface()
 {
 	m_GameType = PVA;
+	m_MapSize = 8;
+	m_NumShip.clear();
+	m_NumShip.push_back(1);
+	m_NumShip.push_back(1);
+	m_NumShip.push_back(1);
+	m_NumShip.push_back(2);
+	m_ManualOrRandom = false;
+	m_LastMenu = -1;
+}
+void GameInterface::ResetInterface()
+{
+	m_ManualOrRandom = false;
+	m_LastMenu = -1;
+}
+
+void GameInterface::DefaultInterface()
+{
+	m_GameType = AVN;
 	m_MapSize = 8;
 	m_NumShip.clear();
 	m_NumShip.push_back(1);
@@ -77,7 +100,7 @@ void GameInterface::AttachInterface(GameStatus gameStatus)
 		}
 		else if (menuSelector == 2)
 		{
-			m_GameType = PVN;
+			m_GameType = AVN;
 		}
 		break;
 	case SELECT_MAP_SHIP:
@@ -162,9 +185,70 @@ void GameInterface::AttachInterface(GameStatus gameStatus)
 	case GAMEPLAY:
 		break;
 	case WIN:
-
+		gotoX = 3;
+		gotoY = 13;
+		currentY = 0;
+		SetColor(BLACK, GREEN);
+		SetCursorPosition(gotoX, gotoY);
+		printf_s("                \n");
+		SetCursorPosition(gotoX, gotoY + 1);
+		printf_s("    To Title    \n");
+		SetCursorPosition(gotoX, gotoY + 2);
+		printf_s("  (New Setting) \n");
+		SetCursorPosition(gotoX, gotoY + 3);
+		printf_s("                ");
+		SetColor(BLACK, WHITE);
+		SetCursorPosition(gotoX + 20, gotoY);
+		printf_s("                \n");
+		SetCursorPosition(gotoX + 20, gotoY + 1);
+		printf_s("   Play Again   \n");
+		SetCursorPosition(gotoX + 20, gotoY + 2);
+		printf_s(" (Same Setting) \n");
+		SetCursorPosition(gotoX + 20, gotoY + 3);
+		printf_s("                ");
+		SetCursorPosition(gotoX + 40, gotoY);
+		printf_s("                \n");
+		SetCursorPosition(gotoX + 40, gotoY + 1);
+		printf_s("      Quit      \n");
+		SetCursorPosition(gotoX + 40, gotoY + 2);
+		printf_s("      Game      \n");
+		SetCursorPosition(gotoX + 40, gotoY + 3);
+		printf_s("                ");
+		SetColor(WHITE, BLACK);
+		m_LastMenu = MenuSelect(3, gotoX, gotoY, currentY, gameStatus);
 		break;
 	case LOSE:
+		gotoX = 6;
+		gotoY = 13;
+		currentY = 0;
+		SetColor(BLACK, GREEN);
+		SetCursorPosition(gotoX, gotoY);
+		printf_s("                \n");
+		SetCursorPosition(gotoX, gotoY + 1);
+		printf_s("    To Title    \n");
+		SetCursorPosition(gotoX, gotoY + 2);
+		printf_s("  (New Setting) \n");
+		SetCursorPosition(gotoX, gotoY + 3);
+		printf_s("                ");
+		SetColor(BLACK, WHITE);
+		SetCursorPosition(gotoX + 20, gotoY);
+		printf_s("                \n");
+		SetCursorPosition(gotoX + 20, gotoY + 1);
+		printf_s("   Play Again   \n");
+		SetCursorPosition(gotoX + 20, gotoY + 2);
+		printf_s(" (Same Setting) \n");
+		SetCursorPosition(gotoX + 20, gotoY + 3);
+		printf_s("                ");
+		SetCursorPosition(gotoX + 40, gotoY);
+		printf_s("                \n");
+		SetCursorPosition(gotoX + 40, gotoY + 1);
+		printf_s("      Quit      \n");
+		SetCursorPosition(gotoX + 40, gotoY + 2);
+		printf_s("      Game      \n");
+		SetCursorPosition(gotoX + 40, gotoY + 3);
+		printf_s("                ");
+		SetColor(WHITE, BLACK);
+		m_LastMenu = MenuSelect(3, gotoX, gotoY, currentY, gameStatus);
 		break;
 	}
 }
@@ -315,6 +399,55 @@ int GameInterface::MenuSelect(int menuSize, int gotoX, int gotoY, int currentY, 
 					}
 				}
 			}
+			if (gameStatus == WIN || gameStatus == LOSE)
+			{
+				if (menuSelector == 1)
+				{
+					menuSelector--;
+					SetColor(BLACK, GREEN);
+					SetCursorPosition(gotoX, gotoY);
+					printf_s("                \n");
+					SetCursorPosition(gotoX, gotoY + 1);
+					printf_s("    To Title    \n");
+					SetCursorPosition(gotoX, gotoY + 2);
+					printf_s("  (New Setting) \n");
+					SetCursorPosition(gotoX, gotoY + 3);
+					printf_s("                ");
+					SetColor(BLACK, WHITE);
+					SetCursorPosition(gotoX + 20, gotoY);
+					printf_s("                \n");
+					SetCursorPosition(gotoX + 20, gotoY + 1);
+					printf_s("   Play Again   \n");
+					SetCursorPosition(gotoX + 20, gotoY + 2);
+					printf_s(" (Same Setting) \n");
+					SetCursorPosition(gotoX + 20, gotoY + 3);
+					printf_s("                ");
+					SetColor(WHITE, BLACK);
+				}
+				else if (menuSelector == 2)
+				{
+					menuSelector--;
+					SetColor(BLACK, GREEN);
+					SetCursorPosition(gotoX + 20, gotoY);
+					printf_s("                \n");
+					SetCursorPosition(gotoX + 20, gotoY + 1);
+					printf_s("   Play Again   \n");
+					SetCursorPosition(gotoX + 20, gotoY + 2);
+					printf_s(" (Same Setting) \n");
+					SetCursorPosition(gotoX + 20, gotoY + 3);
+					printf_s("                ");
+					SetColor(BLACK, WHITE);
+					SetCursorPosition(gotoX + 40, gotoY);
+					printf_s("                \n");
+					SetCursorPosition(gotoX + 40, gotoY + 1);
+					printf_s("      Quit      \n");
+					SetCursorPosition(gotoX + 40, gotoY + 2);
+					printf_s("      Game      \n");
+					SetCursorPosition(gotoX + 40, gotoY + 3);
+					printf_s("                ");
+					SetColor(WHITE, BLACK);
+				}
+			}
 		}
 		else if (keyinput == KEY_RIGHT)
 		{
@@ -339,10 +472,59 @@ int GameInterface::MenuSelect(int menuSize, int gotoX, int gotoY, int currentY, 
 					}
 				}
 			}
+			if (gameStatus == WIN || gameStatus == LOSE)
+			{
+				if (menuSelector == 0)
+				{
+					menuSelector++;
+					SetColor(BLACK, WHITE);
+					SetCursorPosition(gotoX, gotoY);
+					printf_s("                \n");
+					SetCursorPosition(gotoX, gotoY + 1);
+					printf_s("    To Title    \n");
+					SetCursorPosition(gotoX, gotoY + 2);
+					printf_s("  (New Setting) \n");
+					SetCursorPosition(gotoX, gotoY + 3);
+					printf_s("                ");
+					SetColor(BLACK, GREEN);
+					SetCursorPosition(gotoX + 20, gotoY);
+					printf_s("                \n");
+					SetCursorPosition(gotoX + 20, gotoY + 1);
+					printf_s("   Play Again   \n");
+					SetCursorPosition(gotoX + 20, gotoY + 2);
+					printf_s(" (Same Setting) \n");
+					SetCursorPosition(gotoX + 20, gotoY + 3);
+					printf_s("                ");
+					SetColor(WHITE, BLACK);
+				}
+				else if (menuSelector == 1)
+				{
+					menuSelector++;
+					SetColor(BLACK, WHITE);
+					SetCursorPosition(gotoX + 20, gotoY);
+					printf_s("                \n");
+					SetCursorPosition(gotoX + 20, gotoY + 1);
+					printf_s("   Play Again   \n");
+					SetCursorPosition(gotoX + 20, gotoY + 2);
+					printf_s(" (Same Setting) \n");
+					SetCursorPosition(gotoX + 20, gotoY + 3);
+					printf_s("                ");
+					SetColor(BLACK, GREEN);
+					SetCursorPosition(gotoX + 40, gotoY);
+					printf_s("                \n");
+					SetCursorPosition(gotoX + 40, gotoY + 1);
+					printf_s("      Quit      \n");
+					SetCursorPosition(gotoX + 40, gotoY + 2);
+					printf_s("      Game      \n");
+					SetCursorPosition(gotoX + 40, gotoY + 3);
+					printf_s("                ");
+					SetColor(WHITE, BLACK);
+				}
+			}
 		}
 		else if (keyinput == ENTER)
 		{
-			if (gameStatus == SELECT_PLAYER || gameStatus == SET_SHIP)
+			if (gameStatus == SELECT_PLAYER || gameStatus == SET_SHIP || gameStatus == WIN || gameStatus == LOSE)
 				break;
 			else if (gameStatus == SELECT_MAP_SHIP)
 			{
@@ -427,10 +609,8 @@ Position GameInterface::PositionToSetShip(ShipType shipType)
 }
 
 
-Coordinate GameInterface::AttackInterface()
+Coordinate GameInterface::AttackInterface(int startPointX, int startPointY)
 {
-	int startPointX = 9;
-	int startPointY = 11;
 	int currentX = startPointX;
 	int currentY = startPointY;
 	Coordinate attackCoordinate;
@@ -471,6 +651,12 @@ Coordinate GameInterface::AttackInterface()
 			SetCursorAndColor(currentX, currentY, WHITE, WHITE);
 			printf_s("  ");
 		}
+		else if (keyinput == SPACE)
+		{
+			attackCoordinate.m_X = rand() % m_MapSize;
+			attackCoordinate.m_Y = rand() % m_MapSize;
+			break;
+		}
 		else if (keyinput == ENTER)
 		{
 			attackCoordinate.m_X = shipCoordX;
@@ -503,6 +689,13 @@ bool GameInterface::GameStartOrReset()
 	printf_s("    Start Game    \n");
 	SetCursorPosition(gotoX + 2, gotoY + 14);
 	printf_s("                  \n");
+	SetColor(BLACK, WHITE);
+	SetCursorPosition(gotoX + 2, gotoY + 17);
+	printf_s("                  \n");
+	SetCursorPosition(gotoX + 2, gotoY + 18);
+	printf_s("       Reset      \n");
+	SetCursorPosition(gotoX + 2, gotoY + 19);
+	printf_s("                  ");
 	while (true)
 	{
 		int keyinput;
@@ -527,7 +720,7 @@ bool GameInterface::GameStartOrReset()
 			printf_s("       Reset      \n");
 			SetCursorPosition(gotoX + 2, gotoY + 19);
 			printf_s("                  ");
-			startOrReset = false;
+			startOrReset = false; //Reset
 		}
 		else if (keyinput == KEY_UP && startOrReset == false)
 		{
@@ -545,7 +738,7 @@ bool GameInterface::GameStartOrReset()
 			printf_s("       Reset      \n");
 			SetCursorPosition(gotoX + 2, gotoY + 19);
 			printf_s("                  ");
-			startOrReset = true;
+			startOrReset = true; //Start
 		}
 		else if (keyinput == ENTER)
 		{
@@ -555,3 +748,4 @@ bool GameInterface::GameStartOrReset()
 	SetColor(WHITE, BLACK);
 	return startOrReset;
 }
+

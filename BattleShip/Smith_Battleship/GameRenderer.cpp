@@ -4,6 +4,7 @@
 
 GameRenderer::GameRenderer()
 {
+	m_MapSize = 8;
 }
 
 
@@ -18,38 +19,47 @@ void GameRenderer::InitializeRenderer()
 	m_MapSize = 8;
 }
 
-void GameRenderer::RenderPages(GameStatus gameStatus)
+void GameRenderer::ResetRenderer()
+{
+}
+
+void GameRenderer::DefaultRenderer()
+{
+	m_MapSize = 8;
+}
+
+void GameRenderer::RenderPages(GameStatus gameStatus, GamePlayType gameType)
 {
 	int mapWidth = (m_MapSize + 3) * 4;
 	int mapHeight = (m_MapSize + 2) * 2 + 8;
 	int menuSpace = 40;
 	int gotoX = mapWidth + 2;
 	int gotoY = 10;
-
+	SetColor(WHITE, BLACK);
 	system("cls");
 	switch (gameStatus)
 	{
 	case TITLE:
 		SetConsoleSize(82, 13);
 		RenderBattleshipTitle();
-		RenderFiller(82, 81);
+		RenderFiller(82, 81, 7);
 		SetColor(GRAY, BLACK);
-		printf_s("\n   SMITH GAMES \t\t\t\t\t\t\t\t ver1.0\n");
+		printf_s("\n   SMITH GAMES \t\t\t\t\t\t\t\tVer 1.3\n");
 		break;
 	case SELECT_PLAYER:
 		SetConsoleSize(62, 27);
 		RenderSetting();
-		RenderFiller(62, 61);
+		RenderFiller(62, 61, 7);
 		break;
 	case SELECT_MAP_SHIP:
 		SetConsoleSize(62, 34);
 		RenderSetting();
-		RenderFiller(62, 61);
+		RenderFiller(62, 61, 7);
 		break;
 	case SET_SHIP:
 		SetConsoleSize(mapWidth + menuSpace, mapHeight + 6);
 		RenderSetting();
-		RenderFiller(mapWidth + menuSpace, 61);
+		RenderFiller(mapWidth + menuSpace, 61, 7);
 		SetColor(WHITE, BLACK);
 		RenderMap(4, 9);
 		SetCursorAndColor(6, mapHeight + 1, BLACK, WHITE);
@@ -59,13 +69,29 @@ void GameRenderer::RenderPages(GameStatus gameStatus)
 		menuSpace = 25;
 		SetConsoleSize(mapWidth * 2 + menuSpace, mapHeight + 5);
 		RenderGamePlay();
-		RenderFiller(mapWidth * 2 + menuSpace, 74);
+		RenderFiller(mapWidth * 2 + menuSpace, 74, 7);
 		RenderMap(mapWidth + menuSpace, 9);
-		SetCursorPosition(mapWidth + menuSpace + (mapWidth / 2) - 6, mapHeight);
-		printf_s("< My Map >");
+		if (gameType != PVP)
+		{
+			SetCursorPosition(mapWidth + menuSpace + (mapWidth / 2) - 6, mapHeight);
+			printf_s("< My Map >");
+		}
+		else
+		{
+			SetCursorPosition(mapWidth + menuSpace + (mapWidth / 2) - 6, mapHeight);
+			printf_s("< Player 2 >");
+		}
 		RenderMap(4, 9);
-		SetCursorPosition(mapWidth / 2 - 6, mapHeight);
-		printf_s("< Enemy Map >");
+		if (gameType != PVP)
+		{
+			SetCursorPosition(mapWidth / 2 - 6, mapHeight);
+			printf_s("< Enemy Map >");
+		}
+		else
+		{
+			SetCursorPosition(mapWidth / 2 - 6, mapHeight);
+			printf_s("< Player 1 >");
+		}
 		SetCursorPosition(gotoX, gotoY);
 		printf_s("┌─  Result  ─┐");
 		SetCursorPosition(gotoX, gotoY + 1);
@@ -90,14 +116,14 @@ void GameRenderer::RenderPages(GameStatus gameStatus)
 		printf_s("└───────┘");
 		break;
 	case WIN:
-		SetConsoleSize(62, 12);
+		SetConsoleSize(62, 18);
 		RenderWin();
-		RenderFiller(62, 61);
+		RenderFiller(62, 61, 7);
 		break;
 	case LOSE:
-		SetConsoleSize(67, 12);
+		SetConsoleSize(67, 18);
 		RenderLose();
-		RenderFiller(67, 66);
+		RenderFiller(67, 66, 7);
 		break;
 	}
 	SetColor(WHITE, BLACK);
@@ -165,9 +191,9 @@ void GameRenderer::RenderLose()
 	printf_s("                                                                  ");
 }
 
-void GameRenderer::RenderFiller(int consoleWidth, int titleWidth)
+void GameRenderer::RenderFiller(int consoleWidth, int titleWidth, int titleHeight)
 {
-	for (int j = 0; j < 7; ++j)
+	for (int j = 0; j < titleHeight; ++j)
 	{
 		SetCursorPosition(titleWidth, j);
 		for (int i = 0; i < consoleWidth - titleWidth; ++i)
@@ -312,35 +338,50 @@ void GameRenderer::PrintTurn(int turn, int mapSize)
 
 void GameRenderer::PrintResult(HitResult hitResult)
 {
+	SetColor(WHITE, BLACK);
 	switch (hitResult)
 	{
+	case WRONG:
+		SetCursorPosition((m_MapSize + 3) * 4 + 4, 12);
+		printf_s("  Wrong Shot  ");
+		SetCursorPosition((m_MapSize + 3) * 4 + 4, 13);
+		printf_s("              ");
+		break;
 	case HIT:
 		SetCursorPosition((m_MapSize + 3) * 4 + 4, 12);
 		printf_s("     HIT!     ");
+		SetCursorPosition((m_MapSize + 3) * 4 + 4, 13);
+		printf_s("              ");
 		break;
 	case MISS:
 		SetCursorPosition((m_MapSize + 3) * 4 + 4, 12);
 		printf_s("     MISS     ");
+		SetCursorPosition((m_MapSize + 3) * 4 + 4, 13);
+		printf_s("              ");
 		break;
 	case DESTROY_AIRCRAFT:
+		SetColor(RED, BLACK);
 		SetCursorPosition((m_MapSize + 3) * 4 + 4, 12);
 		printf_s("   Aircraft   ");
 		SetCursorPosition((m_MapSize + 3) * 4 + 4, 13);
 		printf_s("  Destroyed!  ");
 		break;
 	case DESTROY_BATTLESHIP:
+		SetColor(BLUE, BLACK);
 		SetCursorPosition((m_MapSize + 3) * 4 + 4, 12);
 		printf_s("  Battleship  ");
 		SetCursorPosition((m_MapSize + 3) * 4 + 4, 13);
 		printf_s("  Destroyed!  ");
 		break;
 	case DESTROY_CRUISER:
+		SetColor(YELLOW, BLACK);
 		SetCursorPosition((m_MapSize + 3) * 4 + 4, 12);
 		printf_s("   Cruiser    ");
 		SetCursorPosition((m_MapSize + 3) * 4 + 4, 13);
 		printf_s("  Destroyed!  ");
 		break;
 	case DESTROY_DESTROYER:
+		SetColor(GREEN, BLACK);
 		SetCursorPosition((m_MapSize + 3) * 4 + 4, 12);
 		printf_s("  Destroyer   ");
 		SetCursorPosition((m_MapSize + 3) * 4 + 4, 13);
@@ -380,3 +421,4 @@ void GameRenderer::SetCursorAndColor(int x, int y, int fcolor, int bcolor)
 	SetCursorPosition(x, y);
 	SetColor(fcolor, bcolor);
 }
+

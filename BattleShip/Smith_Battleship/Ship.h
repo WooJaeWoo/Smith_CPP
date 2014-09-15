@@ -7,11 +7,13 @@ public:
 	Ship();
 	virtual ~Ship();
 
+	void					ResetShip();
+	
 	int						GetCurrentHP() { return m_CurrentHP; }
 	void					SetCurrentHP(int hp) { m_CurrentHP = hp; }
 	ShipType				GetShipType() { return m_Shiptype; }
 
-	void					AddPosition(Coordinate coordinate);
+	void					AddPosition(Position position);
 	HitResult				HitCheck(Coordinate shot);
 
 protected:

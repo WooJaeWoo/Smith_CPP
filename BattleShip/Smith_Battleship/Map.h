@@ -6,7 +6,7 @@ public:
 	Map(int mapSize);
 	~Map();
 	
-	void			InitializeMap();
+	void			ResetMap();
 	
 	void			SetSizeOfMap(int mapSize) { m_MapSize = mapSize; }
 	void			SetMapStatus(Position position, MapStatus mapStatus, ShipType shipType); //for Setting Ship
