@@ -8,6 +8,7 @@
 #include "Destroyer.h"
 
 int Player::m_IDSeed = 0;
+#define DEFAULT_MAP_SIZE 8
 
 Player::Player()
 {
@@ -52,15 +53,11 @@ void Player::ResetPlayer()
 
 void Player::DefaultPlayer()
 {
-	MakeMaps(8);
-	m_MyMap->SetSizeOfMap(8);
-	m_EnemyMap->SetSizeOfMap(8);
+	MakeMaps(DEFAULT_MAP_SIZE);
+	m_MyMap->SetSizeOfMap(DEFAULT_MAP_SIZE);
+	m_EnemyMap->SetSizeOfMap(DEFAULT_MAP_SIZE);
 	m_ShipList.clear();
-	m_ShipList.push_back(new Aircraft());
-	m_ShipList.push_back(new Battleship());
-	m_ShipList.push_back(new Cruiser());
-	m_ShipList.push_back(new Destroyer());
-	m_ShipList.push_back(new Destroyer());
+	MakeShips();
 }
 
 void Player::MakeMaps(int mapSize)
@@ -133,6 +130,17 @@ HitResult Player::SendResult(Coordinate shot)
 	return MISS;
 }
 
+bool Player::CheckAttacked(Coordinate shot)
+{
+	MapStatus mapStatus = m_MyMap->GetMapStatus(shot.m_X, shot.m_Y);
+	if (mapStatus == NOTHING && mapStatus != ATTACKED_SHIP && mapStatus != ATTACKED_MISS)
+	{
+		return false;
+	}
+	else
+		return true;
+}
+
 Coordinate Player::RandomAttack()
 {
 	Coordinate randShot;
@@ -154,8 +162,7 @@ bool Player::IsValidSet(Position position, ShipType shipType)
 	int maxHP = GetMaxHP(shipType);
 	for (int i = 0; i < maxHP; ++i)
 	{
-		if (position.m_X < 0 || position.m_X > m_MyMap->GetMapSize() - 1
-			|| position.m_Y < 0 || position.m_Y > m_MyMap->GetMapSize() - 1)
+		if (position.m_X < 0 || position.m_X > m_MyMap->GetMapSize() - 1 || position.m_Y < 0 || position.m_Y > m_MyMap->GetMapSize() - 1)
 		{
 			return false;
 		}
@@ -189,12 +196,12 @@ void Player::RenderRemain()
 	{
 		sumShip += m_NumShip[i];
 	}
-	SetCursorAndColor(15, (m_MyMap->GetMapSize() + 2) * 2 + 9, BLACK, BLACK);
+	SetCursorAndColor(15, (m_MyMap->GetMapSize() + 2) * 2 + FIRST_MAP_GOTOX, BLACK, BLACK);
 	for (int i = 0; i < sumShip + 1; ++i)
 	{
 		printf_s("   ");
 	}
-	SetCursorPosition(15, (m_MyMap->GetMapSize() + 2) * 2 + 9);
+	SetCursorPosition(15, (m_MyMap->GetMapSize() + 2) * 2 + FIRST_MAP_GOTOX);
 	SetColor(WHITE, BLACK);
 	printf_s(" ");
 	for (int i = 0; i < SHIPTYPECOUNT; i++)
@@ -251,3 +258,10 @@ bool Player::GameOverCheck(HitResult hitResult)
 	return true;
 }
 
+void Player::MarkOnMyMap(Coordinate shot, HitResult hitResult)
+{
+	if (hitResult != MISS)
+		m_MyMap->SetMapStatus(shot, ATTACKED_SHIP);
+	else
+		m_MyMap->SetMapStatus(shot, ATTACKED_MISS);
+}

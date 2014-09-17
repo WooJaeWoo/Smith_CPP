@@ -31,8 +31,10 @@ public:
 	Coordinate					RandomAttack();
 	Coordinate					AIAttack(HitResult hitResult);
 
+	void						MarkOnMyMap(Coordinate shot, HitResult hitResult);
 	void						MarkOnEnemyMap(Coordinate shot, HitResult hitResult);
 	HitResult					SendResult(Coordinate shot);
+	bool						CheckAttacked(Coordinate shot);
 	bool						GameOverCheck(HitResult hitResult);
 
 	bool						IsValidSet(Position position, ShipType shipType);

@@ -17,19 +17,21 @@ public:
 private:
 	void					InitializeGame();
 	void					ResetGame();
-	void					DefaultGame();
+	void					DefaultGameSetting();
 
 	void					SetPlayerType();
 	void					MakeMapAndShip();
 	void					ReadyToFight(Player* player);
+	bool					AttackFlow(Player* attacker, Player* defender);
 
-	bool					AttackFlow(Player* player1, Player* player2);
-	void					PVPSetShip();
-	void					PVASetShip();
-	void					AVNSetShip();
-	int						PVPGameFlow();
-	int						PVAGameFlow();
-	//void					AVNGameFlow();
+	void					PVP_PlaySetShip();
+	void					AI_PlaySetShip();
+	void					NET_PlaySetShip();
+	int						PVP_PlayGameFlow();
+	int						AI_PlayGameFlow();
+	void					NET_PlayGameFlow();
+
+	Position				ConvertPosionForNET(ShipType shipType, Position position);
 
 	void					WriteGameResult(int who);
 	bool					LastMenuDecision(int lastMenu);
@@ -38,6 +40,7 @@ private:
 	GamePlayType			m_GameType;
 	int						m_MapSize;
 	std::vector<int>		m_NumShip;
+	std::vector<Position>	m_ShipPositions;
 	int						m_Turn;
 
 	GameRenderer*			m_GameRenderer;

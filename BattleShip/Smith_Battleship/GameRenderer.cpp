@@ -44,7 +44,7 @@ void GameRenderer::RenderPages(GameStatus gameStatus, GamePlayType gameType)
 		RenderBattleshipTitle();
 		RenderFiller(82, 81, 7);
 		SetColor(GRAY, BLACK);
-		printf_s("\n   SMITH GAMES \t\t\t\t\t\t\t\tVer 1.3\n");
+		printf_s("\n   SMITH GAMES \t\t\t\t\t\t\t\tVer 1.5\n");
 		break;
 	case SELECT_PLAYER:
 		SetConsoleSize(62, 27);
@@ -71,7 +71,7 @@ void GameRenderer::RenderPages(GameStatus gameStatus, GamePlayType gameType)
 		RenderGamePlay();
 		RenderFiller(mapWidth * 2 + menuSpace, 74, 7);
 		RenderMap(mapWidth + menuSpace, 9);
-		if (gameType != PVP)
+		if (gameType != PVP_PLAY)
 		{
 			SetCursorPosition(mapWidth + menuSpace + (mapWidth / 2) - 6, mapHeight);
 			printf_s("< My Map >");
@@ -82,7 +82,7 @@ void GameRenderer::RenderPages(GameStatus gameStatus, GamePlayType gameType)
 			printf_s("< Player 2 >");
 		}
 		RenderMap(4, 9);
-		if (gameType != PVP)
+		if (gameType != PVP_PLAY)
 		{
 			SetCursorPosition(mapWidth / 2 - 6, mapHeight);
 			printf_s("< Enemy Map >");
@@ -119,6 +119,36 @@ void GameRenderer::RenderPages(GameStatus gameStatus, GamePlayType gameType)
 		SetConsoleSize(62, 18);
 		RenderWin();
 		RenderFiller(62, 61, 7);
+		if (gameType == NET_PLAY)
+		{
+			int subgotoX = 12;
+			SetCursorAndColor(23, 8, WHITE, BLACK);
+			printf_s("NETWORK 대전 결과");
+			SetCursorAndColor(subgotoX + 4, 9, LIGHT_GRAY, RED);
+			printf_s("      ");
+			SetCursorPosition(subgotoX + 4, 10);
+			printf_s("  정  ");
+			SetCursorPosition(subgotoX + 4, 11);
+			printf_s("      ");
+			SetCursorAndColor(subgotoX + 12, 9, GRAY, BLUE);
+			printf_s("      ");
+			SetCursorPosition(subgotoX + 12, 10);
+			printf_s("  신  ");
+			SetCursorPosition(subgotoX + 12, 11);
+			printf_s("      ");
+			SetCursorAndColor(subgotoX + 20, 9, DARK_RED, YELLOW);
+			printf_s("      ");
+			SetCursorPosition(subgotoX + 20, 10);
+			printf_s("  승  ");
+			SetCursorPosition(subgotoX + 20, 11);
+			printf_s("      ");
+			SetCursorAndColor(subgotoX + 28, 9, BLACK, GREEN);
+			printf_s("      ");
+			SetCursorPosition(subgotoX + 28, 10);
+			printf_s("  리  ");
+			SetCursorPosition(subgotoX + 28, 11);
+			printf_s("      ");
+		}
 		break;
 	case LOSE:
 		SetConsoleSize(67, 18);
@@ -275,7 +305,7 @@ void GameRenderer::RenderShipOnMap(ShipType shiptype, Position position)
 {
 	for (int i = 0; i < GetMaxHP(shiptype); ++i)
 	{
-		if (position.m_X < 9 || position.m_X > 4 * (m_MapSize - 1) + 9 || position.m_Y < 11 || position.m_Y > 2 * (m_MapSize - 1) + 11)
+		if (position.m_X < FIRST_MAP_GOTOX || position.m_X > 4 * (m_MapSize - 1) + FIRST_MAP_GOTOX || position.m_Y < FIRST_MAP_GOTOY || position.m_Y > 2 * (m_MapSize - 1) + FIRST_MAP_GOTOY)
 			return;
 		SetCursorAndColor(position.m_X, position.m_Y, GetForeColor(shiptype), GetBackColor(shiptype));
 		printf_s("%s", GetShipChar(shiptype).c_str());
@@ -301,7 +331,7 @@ void GameRenderer::RenderSpaceOnMap(ShipType shiptype, Position position)
 {
 	for (int i = 0; i < GetMaxHP(shiptype); ++i)
 	{
-		if (position.m_X < 9 || position.m_X > 4 * (m_MapSize - 1) + 9 || position.m_Y < 11 || position.m_Y > 2 * (m_MapSize - 1) + 11)
+		if (position.m_X < FIRST_MAP_GOTOX || position.m_X > 4 * (m_MapSize - 1) + FIRST_MAP_GOTOX || position.m_Y < FIRST_MAP_GOTOY || position.m_Y > 2 * (m_MapSize - 1) + FIRST_MAP_GOTOY)
 			return;
 		SetCursorAndColor(position.m_X, position.m_Y, BLACK, BLACK);
 		printf_s("  ");

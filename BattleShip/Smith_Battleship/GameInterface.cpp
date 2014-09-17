@@ -6,7 +6,7 @@
 GameInterface::GameInterface()
 {
 	m_GameRenderer = new GameRenderer();
-	m_GameType = PVA;
+	m_GameType = AI_PLAY;
 	m_MapSize = 8;
 	m_NumShip.clear();
 	m_ManualOrRandom = false;
@@ -20,7 +20,7 @@ GameInterface::~GameInterface()
 
 void GameInterface::InitializeInterface()
 {
-	m_GameType = PVA;
+	m_GameType = AI_PLAY;
 	m_MapSize = 8;
 	m_NumShip.clear();
 	m_NumShip.push_back(1);
@@ -38,7 +38,7 @@ void GameInterface::ResetInterface()
 
 void GameInterface::DefaultInterface()
 {
-	m_GameType = AVN;
+	m_GameType = NET_PLAY;
 	m_MapSize = 8;
 	m_NumShip.clear();
 	m_NumShip.push_back(1);
@@ -92,15 +92,15 @@ void GameInterface::AttachInterface(GameStatus gameStatus)
 		menuSelector = MenuSelect(3, gotoX, gotoY, currentY, gameStatus);
 		if (menuSelector == 0)
 		{
-			m_GameType = PVP;
+			m_GameType = PVP_PLAY;
 		}
 		else if (menuSelector == 1)
 		{
-			m_GameType = PVA;
+			m_GameType = AI_PLAY;
 		}
 		else if (menuSelector == 2)
 		{
-			m_GameType = AVN;
+			m_GameType = NET_PLAY;
 		}
 		break;
 	case SELECT_MAP_SHIP:
@@ -551,19 +551,17 @@ bool GameInterface::CheckEnoughSize()
 
 Position GameInterface::PositionToSetShip(ShipType shipType)
 {
-	int startPointX = 9;
-	int startPointY = 11;
 	Position tempPosition;
-	tempPosition.m_X = startPointX;
-	tempPosition.m_Y = startPointY;
+	tempPosition.m_X = FIRST_MAP_GOTOX;
+	tempPosition.m_Y = FIRST_MAP_GOTOY;
 	tempPosition.m_direction = DOWN;
 	Position position;
-	SetCursorPosition(startPointX, startPointY);
+	SetCursorPosition(FIRST_MAP_GOTOX, FIRST_MAP_GOTOY);
 	m_GameRenderer->RenderShipOnMap(shipType, tempPosition);
 	while (true)
 	{
-		int shipCoordX = (tempPosition.m_X - startPointX) / 4;
-		int shipCoordY = (tempPosition.m_Y - startPointY) / 2;
+		int shipCoordX = (tempPosition.m_X - FIRST_MAP_GOTOX) / 4;
+		int shipCoordY = (tempPosition.m_Y - FIRST_MAP_GOTOY) / 2;
 		SetCursorPosition(tempPosition.m_X, tempPosition.m_Y);
 		int keyinput;
 		keyinput = _getch();
@@ -574,20 +572,20 @@ Position GameInterface::PositionToSetShip(ShipType shipType)
 		if (keyinput == KEY_DOWN || keyinput == KEY_UP || keyinput == KEY_LEFT || keyinput == KEY_RIGHT || keyinput == SPACE)
 		{
 			m_GameRenderer->RenderSpaceOnMap(shipType, tempPosition);
-			if (keyinput == KEY_DOWN && tempPosition.m_Y < 2 * (m_MapSize - 1) + startPointY)
+			if (keyinput == KEY_DOWN && tempPosition.m_Y < 2 * (m_MapSize - 1) + FIRST_MAP_GOTOY)
 			{
 				tempPosition.m_Y += 2;
 			}
-			else if (keyinput == KEY_UP && tempPosition.m_Y > startPointY)
+			else if (keyinput == KEY_UP && tempPosition.m_Y > FIRST_MAP_GOTOY)
 			{
 				tempPosition.m_Y -= 2;
 			}
 
-			else if (keyinput == KEY_LEFT && tempPosition.m_X > startPointX)
+			else if (keyinput == KEY_LEFT && tempPosition.m_X > FIRST_MAP_GOTOX)
 			{
 				tempPosition.m_X -= 4;
 			}
-			else if (keyinput == KEY_RIGHT && tempPosition.m_X < 4 * (m_MapSize - 1) + startPointX)
+			else if (keyinput == KEY_RIGHT && tempPosition.m_X < 4 * (m_MapSize - 1) + FIRST_MAP_GOTOX)
 			{
 				tempPosition.m_X += 4;
 			}

@@ -5,7 +5,15 @@
 
 #pragma once
 
+#ifdef _DEBUG
+#pragma comment(lib, "BGNL_debug.lib") //Network Library For Debug Mode
+#else
+#pragma comment(lib, "BGNL.lib") //Network Library For Release Mode
+#endif
+
+#include "Network.h"
 #include "targetver.h"
+#include "ShipData.h"
 
 #include <stdio.h>
 #include <tchar.h>

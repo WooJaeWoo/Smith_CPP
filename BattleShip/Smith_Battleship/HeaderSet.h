@@ -9,6 +9,10 @@
 #define ENTER		13
 
 #define SHIPTYPECOUNT 4
+#define DEFAULT_SHIP_COUNT 5
+#define DEFAULT_MAP_SIZE 8
+#define FIRST_MAP_GOTOX 9
+#define FIRST_MAP_GOTOY 11
 
 enum GameStatus
 {
@@ -57,8 +61,8 @@ enum MapStatus
 enum HitResult
 {
 	WRONG,
-	HIT,
 	MISS,
+	HIT,
 	DESTROY_AIRCRAFT,
 	DESTROY_BATTLESHIP,
 	DESTROY_CRUISER,
@@ -83,9 +87,9 @@ enum PlayerType
 
 enum GamePlayType
 {
-	PVP,
-	PVA,
-	AVN,
+	PVP_PLAY,
+	AI_PLAY,
+	NET_PLAY,
 };
 
 enum Colors
