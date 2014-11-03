@@ -29,7 +29,9 @@ public:
 	void						SetShipCoords();
 
 	Coordinate					RandomAttack();
+	Coordinate					RandomAttackOnChecker();
 	Coordinate					AIAttack(HitResult hitResult);
+
 
 	void						MarkOnMyMap(Coordinate shot, HitResult hitResult);
 	void						MarkOnEnemyMap(Coordinate shot, HitResult hitResult);
@@ -48,4 +50,7 @@ private:
 	std::vector<int>			m_NumShip;
 	std::vector<Ship*>			m_ShipList;
 	std::vector<Position>		m_ShipPositions;
+	Position					m_AIMemPosition;
+	Position					m_AIMemStartPos;
+	HitResult					m_AIMemHitResult;
 };

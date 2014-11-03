@@ -16,6 +16,7 @@ GameInterface::GameInterface()
 GameInterface::~GameInterface()
 {
 	delete m_GameRenderer;
+	m_GameRenderer = nullptr;
 }
 
 void GameInterface::InitializeInterface()
@@ -541,7 +542,7 @@ int GameInterface::MenuSelect(int menuSize, int gotoX, int gotoY, int currentY, 
 
 bool GameInterface::CheckEnoughSize()
 {
-	int sumShipTile = m_NumShip[0] * 5 + m_NumShip[1] * 4 + m_NumShip[2] * 3 + m_NumShip[3] * 2;
+	int sumShipTile = m_NumShip[0] * GetMaxHP(AIRCRAFT) + m_NumShip[1] * GetMaxHP(BATTLESHIP) + m_NumShip[2] * GetMaxHP(CRUISER) + m_NumShip[3] * GetMaxHP(DESTROYER);
 	if (sumShipTile < m_MapSize * m_MapSize - 10)
 		return true;
 	else

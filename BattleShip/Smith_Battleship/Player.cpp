@@ -28,7 +28,9 @@ void Player::InitializePlayer()
 void Player::ClearPlayer()
 {
 	delete m_MyMap;
+	m_MyMap = nullptr;
 	delete m_EnemyMap;
+	m_EnemyMap = nullptr;
 	for (auto ship : m_ShipList)
 	{
 		delete ship;
@@ -38,6 +40,7 @@ void Player::ClearPlayer()
 	m_NumShip.clear();
 	m_ShipList.reserve(0);
 	m_ShipPositions.clear();
+	m_AIMemHitResult = MISS;
 }
 
 void Player::ResetPlayer()
@@ -49,6 +52,7 @@ void Player::ResetPlayer()
 		(*it)->ResetShip();
 	}
 	m_ShipPositions.clear();
+	m_AIMemHitResult = MISS;
 }
 
 void Player::DefaultPlayer()
@@ -58,6 +62,7 @@ void Player::DefaultPlayer()
 	m_EnemyMap->SetSizeOfMap(DEFAULT_MAP_SIZE);
 	m_ShipList.clear();
 	MakeShips();
+	m_AIMemHitResult = MISS;
 }
 
 void Player::MakeMaps(int mapSize)
@@ -139,22 +144,6 @@ bool Player::CheckAttacked(Coordinate shot)
 	}
 	else
 		return true;
-}
-
-Coordinate Player::RandomAttack()
-{
-	Coordinate randShot;
-	randShot.m_X = rand() % m_MyMap->GetMapSize();
-	randShot.m_Y = rand() % m_MyMap->GetMapSize();
-	return randShot;
-}
-
-Coordinate Player::AIAttack(HitResult hitResult)
-{
-	Coordinate shot;
-	if (hitResult == DESTROY_AIRCRAFT || hitResult == DESTROY_BATTLESHIP || hitResult == DESTROY_CRUISER || hitResult == DESTROY_DESTROYER || hitResult == MISS)
-	shot = RandomAttack();
-	return shot;
 }
 
 bool Player::IsValidSet(Position position, ShipType shipType)
@@ -265,3 +254,66 @@ void Player::MarkOnMyMap(Coordinate shot, HitResult hitResult)
 	else
 		m_MyMap->SetMapStatus(shot, ATTACKED_MISS);
 }
+
+Coordinate Player::AIAttack(HitResult hitResult)
+{
+	Coordinate shot;
+	
+	if (m_AIMemHitResult == MISS)
+	{
+		shot = RandomAttackOnChecker();
+		m_AIMemPosition.m_X = shot.m_X;
+		m_AIMemPosition.m_Y = shot.m_Y;
+		m_AIMemPosition.m_direction = (Direction)(rand() % 4);
+	}
+	if (m_AIMemHitResult == HIT)
+	{
+		if (m_AIMemPosition.m_direction == UP)
+		{
+			shot.m_Y = m_AIMemPosition.m_Y - 1;
+		}
+		else if (m_AIMemPosition.m_direction == DOWN)
+		{
+			shot.m_Y = m_AIMemPosition.m_Y + 1;
+
+		}
+		else if (m_AIMemPosition.m_direction == LEFT)
+		{
+			shot.m_X = m_AIMemPosition.m_X - 1;
+
+		}
+		else if (m_AIMemPosition.m_direction == RIGHT)
+		{
+			shot.m_X = m_AIMemPosition.m_X + 1;
+		}
+	}
+	else if (m_AIMemHitResult == DESTROY_AIRCRAFT || m_AIMemHitResult == DESTROY_BATTLESHIP || m_AIMemHitResult == DESTROY_CRUISER || m_AIMemHitResult == DESTROY_DESTROYER)
+	{
+		shot = RandomAttackOnChecker();
+		m_AIMemPosition.m_X = shot.m_X;
+		m_AIMemPosition.m_Y = shot.m_Y;
+		m_AIMemPosition.m_direction = (Direction)(rand() % 4);
+	}
+	m_AIMemHitResult = hitResult;
+	return shot;
+}
+
+Coordinate Player::RandomAttack()
+{
+	Coordinate randShot;
+	randShot.m_X = rand() % m_MyMap->GetMapSize();
+	randShot.m_Y = rand() % m_MyMap->GetMapSize();
+	return randShot;
+}
+
+Coordinate Player::RandomAttackOnChecker()
+{
+	Coordinate randShot;
+	do 
+	{
+		randShot.m_X = rand() % m_MyMap->GetMapSize();
+		randShot.m_Y = rand() % m_MyMap->GetMapSize();
+	} while (randShot.m_X + randShot.m_Y % 2 == 1);
+	return randShot;
+}
+

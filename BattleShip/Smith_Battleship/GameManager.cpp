@@ -17,8 +17,11 @@ GameManager::GameManager()
 GameManager::~GameManager()
 {
 	delete m_GameInterface;
+	m_GameInterface = nullptr;
 	delete m_Player1;
+	m_Player1 = nullptr;
 	delete m_Player2;
+	m_Player2 = nullptr;
 }
 
 // 게임을 처음부터 완전 초기화 (Map, Ship은 Delete)
@@ -38,7 +41,10 @@ void GameManager::InitializeGame()
 // 동일한 세팅으로 게임 오브젝트 초기화 (New Delete 없음)
 void GameManager::ResetGame()
 {
-	m_GameStatus = SET_SHIP;
+	if (m_GameType != NET_PLAY)
+		m_GameStatus = SET_SHIP;
+	else
+		m_GameStatus = GAMEPLAY;
 	m_NumShip = m_GameInterface->GetNumShip();
 	m_Player1->SetNumShip(m_NumShip);
 	m_Player2->SetNumShip(m_NumShip); 
@@ -241,7 +247,7 @@ void GameManager::NET_PlayGameFlow()
 
 	try
 	{
-		network.Connect("10.73.42.117", 9001);
+		network.Connect("10.73.42.117", 9000);
 	}
 	catch (Network::Exception ex)
 	{
@@ -260,7 +266,7 @@ void GameManager::NET_PlayGameFlow()
 
 	try
 	{
-		const wchar_t name[MAX_NAME_LEN] = L"SMITHOO";
+		const wchar_t name[MAX_NAME_LEN] = L"지면 F";
 		const int studentID = 141055;
 
 		error = network.SubmitName(name, studentID);

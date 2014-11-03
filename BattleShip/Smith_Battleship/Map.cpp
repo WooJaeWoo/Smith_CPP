@@ -20,8 +20,10 @@ Map::~Map()
 	for (int i = 0; i < m_MapSize; ++i)
 	{
 		delete m_Map[i];
+		m_Map[i] = nullptr;
 	}
 	delete m_Map;
+	m_Map = nullptr;
 }
 
 void Map::ResetMap()
